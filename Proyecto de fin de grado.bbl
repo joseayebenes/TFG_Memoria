@@ -1,0 +1,45 @@
+\begin{thebibliography}{1}
+
+\bibitem{minted}
+Minted: a highlighted source code for latex.
+\newblock \url{https://code.google.com/p/minted/}, 2014.
+
+\bibitem{GuiaEstilo}
+Eduardo Casilari~Pérez and José~Antonio Cortés~Arrabal.
+\newblock {\em Breves notas de estilo para la redacción de Proyectos Fin de
+  Carrera y Trabajos Fin de Grado}.
+\newblock ETSIT, Universidad de Málaga, 2013.
+\newblock \url{http://www.uma.es/media/files/Manual_de_Estilo_TFG_ETSIT.pdf}.
+
+\bibitem{IDST}
+J.T. Entrambasaguas.
+\newblock {\em Ingeniería de Desarrollo de sistemas de Telecomunicación,
+  \emph{apuntes de clase}}.
+\newblock ETSIT-UMA, Curso 2004-2005.
+
+\bibitem{MTS-1}
+ETSI.
+\newblock {MTS: Methods for Testing Specifications}.
+\newblock \url{http://portal.etsi.org/mbs/Testing/testing.htm}, 2008.
+
+\bibitem{ProgDoc}
+ETSIT.
+\newblock {\em Programación docente}.
+\newblock ETSIT-UMA, Curso 2000-2001.
+
+\bibitem{Lamport}
+Leslie Lamport.
+\newblock {\em \LaTeX : a Document Preparation System}.
+\newblock AddisonWesley Longman, Inc, 2nd edition, August 1999.
+\newblock It includes user's Guide and Reference manual. ISBN: 0-201-52983-1.
+
+\bibitem{estado_bluetooth_avila}
+C.~Reyes L.Avila.
+\newblock Revisión estado del arte de la tecnología bluetooth.
+
+\bibitem{sub_ghz_vivek}
+Vivek Mohan.
+\newblock Sub-ghz wireless design choices for smart metering.
+\newblock Enero 2014.
+
+\end{thebibliography}
