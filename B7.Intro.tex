@@ -6,104 +6,62 @@
 
 \begin{sinopsis}
 	\label{sec:intro:sinop}
-	
+	%http://ieeexplore.ieee.org/document/7542300/
+	%En la actualidad, el mundo conectado está lleno de oportunidades para que todos puedan comunicarse con su entorno al instante. Pero %%los desarrolladores e investigadores, a menudo tienen dificultades para construir experiencias donde la población tenga un fácil %acceso. Aunque  hay una predominación de teléfonos inteligentes, los usuarios a menudo no están dispuestos a instalarse una %aplicación para cada propósito. Aquí comienza el concepto de \textit{physical web}. 
+	En esta primera parte, recorreremos ...
 \end{sinopsis}
 
 \sectionx{Objetivo}
 \label{sec:intro:obj}
 	
-	El objetivo de este trabajo es implementar una red de background a un beacon de Physical web. Usando para ellos el Microcontrolador CC1350 de Texas Instrument. 
+	El objetivo de este trabajo se basa en implementar una red inalámbrica usando el microcontrolador CC1350 de Texas Instruments y el protocolo Simplelink Ti15.4 basado en el IEEE 802.15.4.
+	Cada nodo de esta red emitirá paquetes bluetooth compatibles con la tecnología de Physical Web.
+	
+	
+	Toda la red estará gestionada desde una plataforma web, desde donde se recibirá información del estado de la red y se podrán enviar comandos.
+	Como ejemplo de aplicación de esta tecnología se hará una demostración de una posible Smart City que tendrá dos tipos de nodos distribuidos:
+
+	\begin{description}
+		\item[Nodo simple] Este nodo se utilizará en puntos donde se quiera enviar información a los usuarios sin ninguna interacción más. Por ejemplo un punto turístico o una parada de bus.
+		\item[Nodo aparcamiento de bicicletas] Este nodo simulará que gestiona un aparcamiento de bicicletas alquilables, donde el usuario recibe la dirección web por bluetooth y desde la web selecciona la bicicleta y la red se encarga de abrir el candado de la bicicleta seleccionada.
+	\end{description}
 			
 \sectionx{Estado del arte}
-
-	\subsection*{Redes Sub-GHz}
 	
-	El mayor uso de los enlaces sub-GHz es para la comunicación entre sensores, y desde sensores a un concentrador de datos. Una emergente tendencia esta siendo el uso de este tipo de enlaces es para el uso en la comunicación con electrodomésticos del hogar. Alianzas como ZigBee y Wi-SUN están llevando a cabo procesos de estandarización de las comunicaciones sub-GHz. 
-	
-	\subsubsection*{Alcance}
-	
-	Una de las primeras ventajas del uso de las redes sub-GHz en cualquier aplicación es el largo alcance que proporciona esta banda de frecuencia. Estos sistemas reducen el coste de las complementaciones, con menos concentradores y/o repetidores, para el mismo número de sensores. Las señales a menor frecuencia pueden viajar mayores distancias para una dada potencia de salida y sensibilidad del receptor. Este fenómeno puede verse usando la ecuación de trasmisión de Friis (\ref{eq:friis}). 
-	
-	\begin{equation}
-	P_R  = P_T G_T G_R (\dfrac{\lambda}{4 \pi R})^2 
-	\label{eq:friis}
-	\end{equation}
-		
-	Donde $P_R$ es la potencia recibida, $P_T$ es la potencia transmitida, $G_T$ y $G_R$ son las ganancias de las antenas, $R$ es la distancia entre antenas y $\lambda$ es la longitud de onda.
-	
-	\subsubsection*{Redes de ultra bajo consumo de energía}
-	
-	El consumo de energía es algo importante a considerar. El bajo consumo de energía es algo crítico en lo concerniente a la duración de la batería. Los materiales y los costes relacionados con el reemplazo de las baterías son frecuentemente mucho más altos que el coste de añadir una batería más cara.\\
-	Un factor que afecta al consumo de energía de un sistema es la comunicación radio.  
-	
-	\subsubsection{Cumplimiento normativo}
-	
-	Una de los aspectos más desafiantes del uso de las redes sub-GHz es el marco regulatorio y el cumplimiento de estándares.A menudo, las frecuencias sub-GHz varían dependiendo de la región, dificultando la labor de desarrolladores hardware y software, tabla \ref{tab:frecuencias_nocomerciales}
-	
-	\begin{table}
+	\subsection*{Web Física}
+	\begin{wrapfigure}{r}{0.4\textwidth}
 		\begin{center}
-		
-		\begin{tabular}{|c|c|c|}
-			\hline 
-			Región &  Principal Frecuencia & Organismo regulador \\ 
-			\hline 
-			USA & 902-928 MHz &  FCC part 15.247 \\ 
-			\hline 
-			Europa & 169 MHz and & ETSI EN 300-220 / Wireless M-Bus \\ 
-			\hline 
-			Japón & 920 MHz  & ARIB T-108 \\ 
-			\hline 
-			China & 470-510 MHz  & SRRC  \\ 
-			\hline 
-		\end{tabular} 
-	\end{center}
-	\caption{Bandas de frecuencias para uso no comercial por región.}
-	\label{tab:frecuencias_nocomerciales}
-	\end{table}
+			\includegraphics[width=0.2\textwidth]{graphs/phyWeb-logo}
+		\end{center}
+		\caption{Logo de la web física}
+	\end{wrapfigure}
+	El primer concepto que hay que conocer para afrontar el proyecto es el de Web Física. La Web Física es un término que describe el proceso de presentar objetos cotidianos en internet\cite{enablingInternetThings}. Este enfoque ofrece a los usuarios móviles la posibilidad de gestionar sus tareas diarias en el uso de objetos cotidianos. Los objetos comienzan a ser inteligentes y remotamente controlables. Este modelo permite a los usuarios móviles navegar y controlar los objetos físicos que rodean al dispositivo móvil. Además, esto ayuda al desempeño de tareas diarias dependiendo de los objetos cercanos \cite{phisicalWebSmartCities}.
+	\\
+	Podemos mencionar en este contexto a los conocidos códigos \ac{QR}, los códigos \ac{QR} son un código de barras en dos dimensiones, a menudo utilizados para mapear \ac{URL} con objetos físicos \cite{recognitionQRCodeMobile}. 
+	\\
+	Las etiquetas inalámbricas son uno de los enfoques más utilizados para el marcado de objetos físicos. Las etiquetas inalámbricas pueden soportar protocolos como \ac{BLE} y \textit{WiFi}. Los protocolos mencionados son soportados por la mayoría de los teléfonos móviles modernos.
+	\\
+	% TODO poner imagen de ejemplos de comunicación cercana
+	En la Web Física, personas, lugares y objetos tienen páginas web que proveen información y mecanismos de interacción. Sin embargo, es la amplitud y la profundidad de la pila que rodea a la web, que hacen de esta una atractiva visión para la evolución del \ac{IOT}.\cite{enablingInternetThings}
+	\\
+	Las páginas web son una fantástica tecnología para interacción \ac{H2M}, pero muchos de los casos de uso del \ac{IOT} son interacciones \ac{M2M}. Los formatos de datos usados por \url{Schema.org} y otros, permiten a los agentes de usuario y servicios en la nube analizar los datos para eventos, organizaciones, personas, lugares, productos y así sucesivamente, acutando sobre ellos de forma interactiva y proactiva.  \cite{enablingInternetThings}
+	\\
+	Uno de los primeros proyectos en fomentar esta idea fue \ac{HP} con \textit{Cooltown}, que usaba balizas infrarrojas para transmitir URLs. Más recientemente, \ac{BLE} proporciona una similar baliza de bajo consumo que puede emitir \ac{URL} en paquetes periódicos (\url{www.uribeacon.org}). \cite{enablingInternetThings}
+	\\
 	
+	\subsection*{Redes inalámbricas e internet de las cosas}
+	
+	El futuro de internet tiene como meta integrar diferentes tecnologías de comunicación, cableadas e inalámbricas, con el objetivo de contribuir sustancialmente a mejorar el concepto de \ac{IOT} \cite{smartObjectBlock}. Aunque hay muchas maneras de describir el \ac{IOT}, podemos definirlo como una red con objetos interconectados con direcciones únicas, basadas en un protocolo estándar de comunicación.\cite{evolutionWirelesSensorNetworks}
+	\\
+	Los sensores de bajo costo han facilitado la proliferación de \ac{WSN} en muchos escenarios como monitorización medioambiental, agricultura, salud, y construcciones inteligentes. \ac{WSN} están caracterizadas por una alta heterogeneidad porque están basadas en diferentes soluciones, propietarias y no propietarias. Este gran rango de soluciones está retrasando actualmente desarrollos a gran escala de estas tecnologías a fin de que se obtenga una gran red virtual de sensores que permita integrar todos las existentes redes de sensores.\cite{fromTodayFutureInternet}
+	\\
+	%TODO añadir imagen  "Interworking among heterogeneous WSNs. " de la cita: fromTodayFutureInternet
+	Las redes de sensores basadas en sistemas cerrados o propietarios son islas conectivamente hablando, con limitadas comunicaciones con el mundo exterior. Por lo general, es necesario usar \textit{gateways} con conocimiento específico de la aplicación para exportar los datos de la \ac{WSN} a otros dispositivos conectados a Internet. Además, no hay comuniación directa entre diferentes protocolos a menos que se implementen complejas conversiones específicas para la aplicación en los \textit{gateways} o \textit{proxies}.
+	
+	\subsubsection*{Visión general de las soluciones existentes}
+	% Seguimos con el punto 3 del http://metalab.uniten.edu.my/~azie/AllArt/2011%20-%20%20Luca%20Mainetti%20-%20Evolution%20of%20wireless%20sensor%20networks%20towards%20the%20Internet%20of%20Things_%20A%20survey.pdf
 	
 
-	\subsection*{<<Wireless Area Network>>}
-	
-	Las redes <<WPAN>> (<<Wireless Area Network>>) son basadas en el estándar IEEE 802.15, este tipo de redes tienen muchas aplicaciones.\\  
-	Para este tipo de redes existen acualmente dos estándares predominantes, los cuales son el estándar Zigbee y el estándar Bluetooth. \\
-	\subsubsection*{Zigbee}
-	El estándar Zigbee es un conjunto de protocolos de alto nivel de comunicación inalámbrica, con la utilización de radios digitales de bajo consumo, está basado en el estándar IEEE 802.15.4 de redes de área personal. Los principales objetivos o funciones de este estándar están en las aplicaciones que requieren comunicaciones seguras con baja tasa de envío de datos y maximizar la vida útil de las baterías de los dispositivos que lo implementan.
-	
-	\subsubsection*{Bluetooth}
-	Lanzado por Ericsson en 1994, ofrece una velocidad máxima de 1 Mbps con alcance máximo de unos treinta metros. La tecnología Bluetooth, también conocida como IEEE 802.15.1, tiene la ventaja de tener un bajo consumo de energía, aglo que resulta ideal para usarla en periféricos de pequeño tamaño.
-	
-	\subsection*{Bluetooth}
-	
-	\subsubsection*{Versión 1}
-	
-	En sus comienzos el estándar IEEE 802.15.1 lanzó su primera versión en 2002 bajo el nombre de bluetooth v1.1 ya que las versiones 1 y 1b habían tenido muchos problemas. La versión 1.1 resolvió muchos de los problemas de compatibilidad de las versiones anteriores y agregaron nuevas especificaciones como es el soporte par aun rango de conexiones 10(100), permite el uso de la tecnología de espectro ensanchado por salto de frecuencia resistente a las interferencias, despliega una rápida tasa de salto de frecuencia (FHSS) para proporcionar transmisión simultánea de voz y datos con aproximadamente 1 Mbit/s de velocidad de datos entre otras. 
-	
-	\subsubsection*{Versión 2}
-	
-	Fue lanzada en 2004 y es compatible con la versión anterior. La principal diferencia es la introducción de una velocidad de datos mejorada (EDR - Enhanced Data Rate) para acelerar la transferencia de datos. EDR utiliza una combinació  de GFSK y PSK. EDR puede proporcionar un menor consumo de energía a través de un ciclo de trabajo reducido.
-	
-	\subsubsection*{Versión 3}
-	
-	La versión 3.0 soporta velocidades de datos de 24 Mbit.\\
-	La conexión bluetooth nativa es utilizada para realizar la negociación y el establecimiento. Pero el nivel de enlace de tráfico es posible gracias al estándar 802.11 lo cual genera un transporte a alta velocidad. Solo los dispositivos con la abreviatura <<HS>> son los que incorporan el estándar 802.11 y pertenecen a la versión 3. Usa de las características de esta versión es que cuando deben enviarse grandes cantidades de datos se utiliza PHY MAC 802.11 que generalmente están asociados con la tecnología wifi para transportar los datos.\\
-	Finalmente se puede concluir que la versión 3.0 se caracteriza por la alta velocidad de transferencia de datos y entra a trabajar de la mano de las tecnologías wifi.
-	
-	\subsubsection*{Versión 4}
-	
-	La versión 4 o BLE por sus siglas en inglés de <<Bluetooth Low Energy>>, como se le conoce normalmente, podemos notar que actualmente los dispositivos del común que usan bluetooth como son teléfonos móviles, <<Tablet>>, y otros, vienen solamente con la versión 2.0 o anterior. Lo que trae con ello un problema en seguridad y alto consumo de energía. Es por ello que el principal propósito de esta versión además de corregir los antiguos errores de seguridad y otros, es el de hacer un menos consumo de energía. Este estándar está enfocado principalmente a aplicaciones de bajo consumo y de baja transmisión de datos, esta orientación es un punto importante para los dispositivos más pequeños especialmente los que están enfocados a la biomedicina, deporte, seguridad y hasta domótica.
-		
-	\subsubsection*{Physical web}
-	
-	El concepto de <<Physical web>>, los <<beacons>> son usados para transmitir una simple URL que es fácilmente abierta en un navegador web. La ventaja de este es el fácil uso, no son necesarias <<apps>> especiales, lo único necesarios es crear una página web donde el <<beacon>> está apuntando. \\
-	Google Physical Web está especificado par ael uso de Bluetooth 4.  Algunas diferentes configuraciones son:
-	\begin{enumerate}
-		\item URL, transmite una URL.
-		\item TLM (<<Time Length Message>>), usado para transmite datos del sensor.
-		\item UDI (<<Unique Device Identifier>>), usado para casos que necesitan proximidad.
-	\end{enumerate}
-	
-	 
 \sectionx{Metodología y directrices seguidas}
 	
 	
