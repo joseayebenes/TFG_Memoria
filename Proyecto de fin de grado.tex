@@ -20,9 +20,6 @@
 % Formato de documento hasta el capítulo 1 (sin incluirlo)
 \frontmatter
 
-%% Título y autor del proyecto
-%%Rellenar con el nombre real del autor, título, tutor y año.
-%%El departamento del tutor se escribe una vez en el Resumen del PFC
 \renewcommand{\pfcauthorname}{JOSÉ ANTONIO YÉBENES GÁLVEZ}
 \renewcommand{\pfctitlename}{Plataforma inal\'{a}mbrica para la web física}
 \renewcommand{\pfctutorname}{Ignacio Herrero y José Manuel Cano}
@@ -35,7 +32,7 @@
 \input{B2.Calificacion.tex}
 
 % Resumen del proyecto (formulario)
-\input{B3.ResumenPFC.tex}
+\input{B3.ResumenTFG.tex}
 
 % Dedicatoria.
 \input{B4.Dedicatoria.tex}
@@ -52,40 +49,38 @@
 \mainmatter
 
 % Prólogo.
-\input{B6.Prologo.tex}
+%\input{B6.Prologo.tex}
 
 % Parte I. Introducción
 \part{Introducción}
 
-% Introducción y objetivo
-\input{B7.Intro.tex}
+\input{I1.Objetivo.tex}
+\input{I2.EstadoArte.tex}
+\input{I4.Estructura.tex}
+\input{I3.Metodologia.tex}
 
 \part{Desarrollo del proyecto}
 
 % Capítulo 01.
-\input{Capitulo01.tex}
+\input{C1.Descripcion.tex}
 
 % Capítulo 02.
-%\input{Capitulo02.tex}
+\input{C2.RedInalambrica.tex}
 
 % Capítulo 03.
-%\input{Capitulo03.tex}
+\input{C3.Servidor.tex}
 
-% Capítulo 04.
-%\input{Capitulo04.tex}
+\part{Pruebas y funcionamiento}
 
-
-%\part{Pruebas y funcionamiento}
-
-%\part{Conclusiones y lineas futuras}
-%\input{D0.Conclusiones.tex}
+\part{Conclusiones y lineas futuras}
+\input{D0.Conclusiones.tex}
 
 % Anexos
-%\part{Apéndices}
+\part{Apéndices}
 
 %\appendix
 
-%\input{D1.AppendixA.tex}
+\input{D1.AppendixA.tex}
 
 %\input{D2.AppendixB.tex}
 
@@ -99,6 +94,6 @@
 \input{E1.Bibliografia.tex}
 
 % Índice alfabético%
-\input{F1.Index.tex}
+%\input{F1.Index.tex}
 
 \end{document}
