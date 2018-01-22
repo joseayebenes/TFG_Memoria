@@ -7,17 +7,35 @@
 	\def\svgwidth{\columnwidth}
 	\resizebox{\textwidth}{!}{\input{graphs/diagramaGeneral.pdf_tex}}
 	\caption{Esquema general del proyecto}
+	\label{fig:esquemaGeneral}
 \end{figure}
 
 \sectionx{Visión General}
-Probando tíldes
-\sectionx{Ti 15.4 Stack}
 
-\sectionx{Raspberry Pi}
+Este proyecto se presenta cómo una solución al problema de comunicarse desde teléfonos móviles con otros objetos, para ello se crea una red inalámbrica que permite la comunicación con un nodo de la red a través de una web sin la necesidad de aplicaciones móviles extra.\\
 
-\sectionx{Protocol Buffers}
+Durante el desarrollo de este \ac{TFG} se resuelven dos problemas concretos usando esta tecnología: un aparcamiento de bicicletas y una baliza que envía información a los usuarios.\\
 
-\sectionx{NodeJS}
+En la figura \ref{fig:esquemaGeneral} se refleja como sería el esquema de red utilizado. Esta red se compone de 5 elementos diferenciados que se comunican de distintas formas entre ellos. En este capítulo procederemos a explicar la función de cada dispositivo en la red.
+
+\sectionx{Teléfono móvil}
+
+El teléfono móvil es la interfaz del usuario y sería el encargado de recibir la información que le envía el nodo como un paquete bluetooth del tipo Eddystone URL enmarcado en la tecnología de la web física. Para que el usuario pueda recibir este paquete necesita un dispositivo con bluetooth ¿4.0? y activar la opción de "Web física" en el navegador Chrome. \\
+
+Con esta configuración cada vez que el usuario esté al alcance de un nodo, recibirá una notificación con la \ac{URL}.
+
+\sectionx{Nodo}
+
+En el extremo de la red se encuentran los nodos, que su principal cometido es enviar paquetes bluetooth a los teléfonos móviles además de ejecutar las ordenes que se le envían desde la web.\\
+
+Para comunicarse con la red, utiliza el protocolo propietario Ti802.15 de Texas Instruments.
+
+
+\sectionx{Colector}
+
+
+\sectionx{Servidor}
+
 
 
 \chapterend

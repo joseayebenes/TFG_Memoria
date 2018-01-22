@@ -4,69 +4,7 @@
 	
 \sectionx{Web F\'{i}sica}
 
-\begin{wrapfigure}{r}{0.4\textwidth}
-	\begin{center}
-		\includegraphics[width=0.2\textwidth]{graphs/phyWeb-logo}
-	\end{center}
-	\caption{Logo de la web f\'{i}sica}
-\end{wrapfigure}
-
-El primer concepto que hay que conocer para afrontar el proyecto es el de Web Física. La Web Física es un término que describe el proceso de presentar objetos cotidianos en internet\cite{enablingInternetThings}. Este enfoque ofrece a los usuarios móviles la posibilidad de gestionar sus tareas diarias en el uso de objetos cotidianos. Los objetos comienzan a ser inteligentes y remotamente controlables. Este modelo permite a los usuarios móviles navegar y controlar los objetos físicos que rodean al dispositivo móvil. Además, esto ayuda al desempeño de tareas diarias dependiendo de los objetos cercanos \cite{phisicalWebSmartCities}.\\
-
-Podemos mencionar en este contexto a los conocidos códigos \ac{QR}, los códigos \ac{QR} son un código de barras en dos dimensiones, a menudo utilizados para mapear \ac{URL} con objetos físicos \cite{recognitionQRCodeMobile}.\\
-
-Las etiquetas inalámbricas son uno de los enfoques más utilizados para el marcado de objetos físicos. Las etiquetas inalámbricas pueden soportar protocolos como \ac{BLE} y \textit{WiFi}. Los protocolos mencionados son soportados por la mayoría de los teléfonos móviles modernos.\\
-
-
-\begin{figure}
-	\centering
-	\def\svgwidth{\columnwidth}
-	\resizebox{0.7\textwidth}{!}{\input{graphs/dibujo.pdf_tex}}
-	\caption{Ejemplos de comunicaci\'{o}n cercana}
-\end{figure}
-
-En la Web Física, personas, lugares y objetos tienen páginas web que proveen información y mecanismos de interacción. Sin embargo, es la amplitud y la profundidad de la pila que rodea a la web, que hacen de esta una atractiva visión para la evolución del \ac{IOT}.\cite{enablingInternetThings}\\
-
-Las páginas web son una fantástica tecnología para interacción \ac{H2M}, pero muchos de los casos de uso del \ac{IOT} son interacciones \ac{M2M}. Los formatos de datos usados por \url{Schema.org} y otros, permiten a los agentes de usuario y servicios en la nube analizar los datos para eventos, organizaciones, personas, lugares, productos y así sucesivamente, acutando sobre ellos de forma interactiva y proactiva.  \cite{enablingInternetThings}\\
-
-Uno de los primeros proyectos en fomentar esta idea fue \ac{HP} con \textit{Cooltown}, que usaba balizas infrarrojas para transmitir URLs. Más recientemente, \ac{BLE} proporciona una similar baliza de bajo consumo que puede emitir \ac{URL} en paquetes periódicos (\url{www.uribeacon.org}). \cite{enablingInternetThings}\\
-
-
 \sectionx{Redes inal\'{a}mbricas e internet de las cosas}
 
-El futuro de internet tiene como meta integrar diferentes tecnologías de comunicación, cableadas e inalámbricas, con el objetivo de contribuir sustancialmente a mejorar el concepto de \ac{IOT} \cite{smartObjectBlock}. Aunque hay muchas maneras de describir el \ac{IOT}, podemos definirlo como una red con objetos interconectados con direcciones únicas, basadas en un protocolo estándar de comunicación.\cite{evolutionWirelesSensorNetworks}\\
-
-Los sensores de bajo costo han facilitado la proliferación de \ac{WSN} en muchos escenarios como monitorización medioambiental, agricultura, salud, y construcciones inteligentes. \ac{WSN} están caracterizadas por una alta heterogeneidad porque están basadas en diferentes soluciones, propietarias y no propietarias. Este gran rango de soluciones está retrasando actualmente desarrollos a gran escala de estas tecnologías a fin de que se obtenga una gran red virtual de sensores que permita integrar todos las existentes redes de sensores.\cite{fromTodayFutureInternet}\\
-
-%TODO añadir imagen  "Interworking among heterogeneous WSNs. " de la cita: fromTodayFutureInternet
-Las redes de sensores basadas en sistemas cerrados o propietarios son islas conectivamente hablando, con limitadas comunicaciones con el mundo exterior. Por lo general, es necesario usar \textit{gateways} con conocimiento específico de la aplicación para exportar los datos de la \ac{WSN} a otros dispositivos conectados a Internet. Además, no hay comuniación directa entre diferentes protocolos a menos que se implementen complejas conversiones específicas para la aplicación en los \textit{gateways} o \textit{proxies}.
-
-\sectionx{Visi\'{o}n general de las soluciones existentes}
-En este apartado presentaremos una rápida visión general de las principales tecnologías usadas para \ac{WSN} \cite{wirelessAutomationNetworks}. Analizaremos las soluciones que no están basadas en los protocolos de internet. 
-
-\subsection*{ZIGBEE} 
-ZigBee es una tecnología de red inalámbrica desarrollada por la ZigBee Alliance para baja tasa de transmisión de datos y aplicaciones de corto alcance \cite{ZigBeeHome}. La pila de protocolos ZigBee  está compuesta por 4 principales capas: la capa \ac{PHY}, la capa \ac{MAC}, la capa \ac{NWK} y la capa \ac{APL}. \ac{PHY} y \ac{MAC} de ZigBee están definidas por el estándar \ac{IEEE} 802.15.4, mientras el resto de la pila está definida por la especificación ZigBee.\\
-
-Esta versión inicial del \ac{IEEE} 802.15.4, en la que ZigBee está basado, funciona en la bandas de 868 MHz (Europa), 915 MHz (Norteamérica) y 2.4 GHz (global).\\
-
-Una nueva especificación de ZigBee es RF4CE \cite{ZigBeeRF4C}, que tiene una simplificada pila de red para topologías en estrellas solamente, ofreciendo una solución simple para el control remoto de electrónica de consumo.
-
-\subsection*{Z-WAVE} Z-Wave es un protocolo inalámbrico desarrollado por ZenSys y promovida por la Z-Wave Alliance para automatizaciones residenciales y pequeños entornos comerciales. El principal objetivo de permitir transmisiones seguras de cortos mensajes desde una unidad de control hasta uno más nodos en la red \cite{ZWaveProtocol}. Z-Wave esta organizado de acuerdo a un arquitectura cumpuesta por 5 capas principales: \ac{PHY}, \ac{MAC}, transferencia, enrutado y capas de aplicación.\\
-
-Z-Wave opera principalmente en la banda de 900 MHz (868 MHz en Europa y 908 MHz en Estados Unidos) y 2.4 GHz. Z-Wave permite tasas de transmisión a 9.6 kb/s, 40 kb/s y 200 kb/s.
-
-\subsection*{INSTEON}
-INSTEON \cite{InsteonDetails} es una solución desarrollada por SmartLabs y promovida por la INSTEON Alliance. Una de las distintivas características de INSTEON es el hecho de como define una topología de red compuesta de \ac{RF} y \textit{power line links}. Los dispositivos pueden ser \ac{RF},  \textit{power-line}, o pueden soportar ambos tipos de comunicación.\\
-
-INSTEON opera a 904 MHz como frecuencia central, con una tasa de datos bruta de 38.4 kb/s.\\
-
-Los dispositivos INSTEON son parejas, lo que significa que cualquiera de ellos pueden tener el rol de emisor, receptor o repetidor. La comunicación entre ambos dispositivos que no estén en el mismo rango se logra mediante un enfoque <<multisalto>> que usa los repetidores en un esquema de sincronización temporal.
-
-\subsection*{WAVENIS}
-Wavenis es un protocolo inalámbrico desarrollado por Coronis System para el control y monitorización de aplicaciones en entornos exigentes, incluida la domótica y la automatización de edificios. Wavenis actualmente está promovida y gestionada por la \ac{Wavenis-OSA}. Está definido por la funcionalidad de las capas física, de enlace y de red \cite{ProblemSolvingWireless}. Los servicios de Wavenis pueden ser accedidos desde capas superiores mediante una \ac{API}.\\
-
-Wavenis opera principalmente en las bandas de 433 MHz, 868 MHz y 915 MHz, que son bandas reservadas para \ac{ISM} en Asia, Europa y Estados Unidos. Algunos productos también operan en la banda de 2.4 GHz. Las tasas de transmisión mínimas y máximas dadas por Wavenis son 4.8 kb/s y 100 kb/s, respectivamente, con 19.2 kb/s como valor típico.
-
-\subsection*{TI 15.4-STACK}
 
 \chapterend{}
