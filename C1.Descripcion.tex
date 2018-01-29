@@ -1,7 +1,10 @@
 
-\chapterbegin{Descripción general del proyecto}
-\label{chp:ti15stack}
+\chapterbegin{Descripción general}
+\label{chp:descripcionGeneral}
 \minitoc
+
+\sectionx{Esquema General}
+
 \begin{figure}[h]
 	\centering
 	\def\svgwidth{\columnwidth}
@@ -9,29 +12,25 @@
 	\caption{Esquema general del proyecto}
 	\label{fig:esquemaGeneral}
 \end{figure}
+El presente trabajo de fin de grado se puede representar como se observa en la figura \ref{fig:esquemaGeneral}, donde están representados los diferentes elementos que componen la arquitectura.\\
 
-\sectionx{Visión General}
-
-Este proyecto se presenta cómo una solución al problema de comunicarse desde teléfonos móviles con otros objetos, para ello se crea una red inalámbrica que permite la comunicación con un nodo de la red a través de una web sin la necesidad de aplicaciones móviles extra.\\
-
-Durante el desarrollo de este \ac{TFG} se resuelven dos problemas concretos usando esta tecnología: un aparcamiento de bicicletas y una baliza que envía información a los usuarios.\\
-
-En la figura \ref{fig:esquemaGeneral} se refleja como sería el esquema de red utilizado. Esta red se compone de 5 elementos diferenciados que se comunican de distintas formas entre ellos. En este capítulo procederemos a explicar la función de cada dispositivo en la red.
-
-\sectionx{Teléfono móvil}
-
-El teléfono móvil es la interfaz del usuario y sería el encargado de recibir la información que le envía el nodo como un paquete bluetooth del tipo Eddystone URL enmarcado en la tecnología de la web física. Para que el usuario pueda recibir este paquete necesita un dispositivo con bluetooth ¿4.0? y activar la opción de "Web física" en el navegador Chrome. \\
-
-Con esta configuración cada vez que el usuario esté al alcance de un nodo, recibirá una notificación con la \ac{URL}.
+Del diagrama se extrae que hay cuatro dispositivos distintos: nodo, concentrador, Raspberry Pi y servidor. Cada uno de estos elementos tiene su propia linea de ejecución diferente de los demás. También se observa como están interconectados los diferentes dispositivos usando protocolos diferentes según sea la comunicación. En los siguientes apartados se repasarán la función de cada uno de los dispositivos y como se comunican con los demás.
 
 \sectionx{Nodo}
 
-En el extremo de la red se encuentran los nodos, que su principal cometido es enviar paquetes bluetooth a los teléfonos móviles además de ejecutar las ordenes que se le envían desde la web.\\
+El nodo es uno de los extremos de la red, y es el encargado de comunicarle al usuario la \ac{URL} tal y como define la web física. Este está basado en el microcontrolador CC1350 SimpleLink\TM de Texas Instruments que nos permite comunicación en dos bandas de frecuencia diferentes, en nuestro caso 868MHz y 2.4Ghz.\\
 
-Para comunicarse con la red, utiliza el protocolo propietario Ti802.15 de Texas Instruments.
+Con el uso de estas dos bandas de frecuencia, el nodo se comunicará con el usuario usando la banda de 2.4GHz y el protocolo bluetooth. Y con el resto de la red usando la banda de 868MHz y el protocolo TI 15.4 Stack.\\
 
+Usando la red inalámbrica TI 15.4 Stack, el nodo podrá enviar y recibir información desde otros puntos de la red, como por ejemplo cambiar la url que está enviando o enviar datos de sensores.
 
-\sectionx{Colector}
+\sectionx{Concentrador}
+
+El concentrador es el nodo central de la red TI 15.4 Stack, este se encarga de comunicarse con los nodos a 868MHz. Este dispositivo ejecuta un código precompilado, 
+que implementa una capa 802.15.4e/g MAC/PHY y proporciona una interfaz basada en el protocolo \ac{MT} que conecta el dispositivo con el host linux, en nuestro caso una Raspberry Pi.\\
+
+\sectionx{Raspberry Pi}
+
 
 
 \sectionx{Servidor}

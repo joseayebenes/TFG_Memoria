@@ -1,0 +1,46 @@
+\chapterbegin{Consumo}
+\label{chp:consumo}
+\minitoc
+
+\sectionx{Introducción}
+Para una exitosa implementación del \ac{IOT} uno de los requisitos más importantes es un consumo eficiente del sistema.\\
+
+La comunicación inalámbrica entre los nodos comienza a ser un problema cuando la fuente de alimentación es limitada. Un sistema que pueda funcionar con una sola pila AAA durante años es lo ideal en el \ac{IOT} \cite{mahmoud2016study}. Por ello, durante el desarrollo de este proyecto se ha utilizado como protocolo inalámbrico el IEEE 802.15.4, que destaca su bajo consumo.\\
+
+\sectionx{Medida del consumo}
+
+Para realizar la medida de consumo se ha utilizado el multímetro digital Keysight 34411A, que proporciona 6 dígitos y medio de resolución y una velocidad de muestreo de 50000 muestras/s. \cite{multimeter4411A}\\
+
+Para el control del multímetro se ha utilizado dos programas de LabView, uno de ellos permite obtener datos a la máxima velocidad de muestreo aunque eso limite la resolución a 4 dígitos (figura \ref{fig:capturaRapida}) y el otro programa permite tomar datos promediados en intervalos de tiempo (figura \ref{fig:capturaPromedio}).
+
+\begin{figure}[h]
+	\centering
+	\begin{subfigure}[b]{0.45\textwidth}
+		\includegraphics[width=\textwidth]{graphs/CapturaRapida.png}
+		\caption{Captura rápida}
+		\label{fig:capturaRapida}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.45\textwidth}
+		\includegraphics[width=\textwidth]{graphs/CapturaPromedio.png}
+		\caption{Captura promedio}
+		\label{fig:capturaPromedio}
+	\end{subfigure}
+	\caption{Programas de LabView}
+	\label{fig:capturasLabview}
+\end{figure}
+
+\sectionx{Resultados}
+
+Aunque el objetivo de esta prueba es conocer el consumo medio de corriente del nodo. Antes de nada se necesita conocer que fondo de escala utilizar en el multímetro para la medida en promedio, para ello se hace uso del programa de captura a máxima frecuencia de muestreo, donde se obtiene la corriente instantánea máxima que consume el nodo, unos 15 mA (figura \ref{fig:datosCapturaRapida}).
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.8\textwidth]{graphs/capturaRapidaDatos.png}
+	\caption{Consumo en mA del nodo a la máxima frecuencia de muestreo}
+	\label{fig:datosCapturaRapida}
+\end{figure}
+
+Finalmente, utilizando el programa de medida promediada de LabView con un fondo de escala de 100mA, realizamos una medida de la corriente promedio durante 50 ciclos de subidas al servidor. Con esta configuración se obtiene que el consumo medio de un nodo es de 169.6 $\micro A$, lo que equivale a más de 5 meses de funcionamiento utilizando una pila de botón CR 2477. 
+
+
+\chapterend{}
