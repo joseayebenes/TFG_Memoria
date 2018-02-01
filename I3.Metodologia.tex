@@ -2,8 +2,41 @@
 \chapterbegin{Metodología}
 \label{chp:metod}
 
-El proyecto tiene diferentes partes, cada una de ellas con su propia metodología de trabajo y requerimientos específicos.  \\
+Para la correcta realización de este \ac{TFG} se han elegido diversas herramientas y metodologías.\\
 
-Para trabajar con el microcontrolador seleccionado he utilizado los diferentes programas que recomiendan el fabricante. Aunque principalmente ha sido el uso de \ac{CCS} como herramienta para la programación y depuración del microcontrolador.
+Cuando se aborda un proyecto de investigación, la primera fase consiste en investigar y aprender sobre la materia. Para esto se han utilizado tres portales principalmente: Google Académico, IEEE Xplore\R y la web de Texas Instruments. De estos portales se ha extraído la información necesaria para el desarrollo de este proyecto.\\
+
+Los proyectos software normalmente necesitan un control de versiones, para poder trazar qué cambios se han realizado en el proyecto y poder volver a versiones anteriores si fuera necesario. Para este proyecto se ha utilizado Github que es una servidor para alojar proyectos utilizando el sistema de control de versiones GIT. Al inicio del proyecto se crearon cuatro repositorios diferentes donde se ha guardado la mayor parte de la información del \ac{TFG}. Los repositorios son enumerados a continuación:
+
+\begin{description}
+	\item[TFG\_memoria] (https://github.com/joseayebenes/TFG\_Memoria) Almacena la información sobre esta memoria escrita en \LaTeX{}.
+	\item[TFG\_HostCollector] (https://github.com/joseayebenes/TFG\_HostCollector) Este repositorio contiene el proyecto del concentrador o nodo central de la red.
+	\item[TFG\_Sensor] (https://github.com/joseayebenes/TFG\_Sensor) Contiene el código que ejecutan los nodos de la red.
+	\item[TFG\_Gateway] (https://github.com/joseayebenes/TFG\_Gateway) En este se guarda el proyecto del servidor.
+\end{description}
+
+Cada uno de los repositorios alberga partes diferentes del proyecto y cada una de estas partes han tenido herramientas y metodologías diferentes.
+
+\sectionx{Memoria} 
+
+La memoria es la parte final de un proyecto, es donde se resumen la investigación y se presentan los resultados. Para su realización se ha utilizado \LaTeX{}, que es un sistema de composición de textos y el entorno TeXstudio para facilitar el trabajo y compilación del documento.Además se han utilizado herramientas cómo StarUML o  Adobe Illustrator para la creación de los diagramas e imágenes.\\
+
+\sectionx{Concentrador}
+
+Esta parte está destinada a ser ejecuta en un entorno Linux, por lo que ha sido programado en C++, usando el editor de textos SublimeText para la edición de los archivos de código.\\
+
+Uno de los inconvenientes al realizar esta parte era trabajar en un sistema operativo distinto al instalado en el ordenador, por lo que en las primeras fases del proyecto se utilizó una máquina virtual con el sistema operativo Ubuntu en VirtualBox, aunque la falta de recursos hacía lento el desarrollo. Cómo solución, se comenzó a trabajar utilizando la Raspberry Pi que finalmente se incluiría en el proyecto creando unos \textit{scripts} que automatizaban la tarea de descargar el código de GitHub, compilar y ejecutar. De esta forma se puede programar en cualquier sistema operativo y al subir los cambios a GitHub, la Raspberry Pi se los descargaba, compilaba y ejecutaba.
+
+\sectionx{Servidor}
+
+El servidor está basado en Node.js\R, que es un entorno de ejecución para JavaScript construido con el motor de JavaScript V8 de Chrome. El código en JavaScript del servidor se realizó utilizando SublimeText.\\
+
+La parte del \textit{FrontEnd}, es decir, la parte con la que el usuario interactúa, está basada en el \textit{FrameWork} AngularJS, que es una \textit{FrameWork} de JavaScript de código abierto basado en el patrón de diseño \ac{MVC}.\\
+
+En la fase final, el servidor se alojó en un servidor dedicado de Amazon WebServices basado en Ubuntu Server, donde se crearon \textit{scripts} similares a los del concentrador para automatizar los despliegues de los cambios realizados.
+
+\sectionx{Nodo}
+
+El nodo está programado en C usando el IDE CodeComposerStudio y librerías del fabricante.
 
 \chapterend
