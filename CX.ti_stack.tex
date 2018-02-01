@@ -32,6 +32,7 @@ Para el desarrollo de este \ac{TFG} se utilizarán ambas arquitecturas, usando la
 La elección de una banda y una tasa de transmisión elegirse configurando el apropiado atributo (PHY ID). Las opciones son explicadas en la tabla \ref{tab:bandasFrecuencia}.
 
 \begin{table}[h]
+	\centering
 	\begin{tabular}{ c c c c c }
 		\textbf{PHY ID} & \textbf{Tasa de datos} & \textbf{Frecuencia canal 0} & \textbf{Nº canales} & \textbf{Espacio canales} \\ 
 		\hline 
@@ -76,10 +77,31 @@ La figura \ref{fig:fig-icall-messaging-example} muestra un ejemplo de como un co
 
 \sectionx{uBle}
 
-\sectionx{Modo Beacon}
+\ac{uBle} es una variante del paquete BLE-Stack para los dispositivos con conectividad Sub1-GHz y 2.4GHz, como el CC1350. Este paquete permite a las aplicaciones ser encontradas, escanear o actuar como monitor de conexión. El paquete uBle utiliza el \textit{MultiMode RF Driver}. El \textit{MultiMode RF Driver} permite a las aplicaciones usar ambos modos donde otro protocolo de comunicación es integrado junto al uBle.
 
-\sectionx{Modo Non\-Beacon}
+\subsection*{Restricciones y requisitos}
 
-\sectionx{Modo Frequency\-Hopping}
+El Micro BLE Stack tiene las siguientes restricciones y requisitos:
+\begin{itemize}
+	\item Las opciones de diseño dependen de una parcial integración de \ac{ICall} para guardar  recursos del sistema. En el caso de uso del módulo \ac{ICall}, se tiene que utilizar el sistema de gestión de pila del módulo \ac{ICall}.
+	\item No puede haber interacción humana-computador porque no existe separación entre el controlador y el host.
+	\item Las opciones de privacidad no son soportadas.
+	\item Para minimizar el consumo de memoria y eliminar redundantes cambios de contexto el uBle no utiliza diferentes tareas en TI-RTOS.
+	\item Solo configuraciones utilizando el \textit{MultiMode RF Driver} pueden ser usada con otros protocolos RF. 
+\end{itemize} 
+
+\sectionx{Modos de operación}
+\subsection*{Modo Beacon}
+Las especificaciones IEEE 802.15.4 definen un modo de operación \textit{beacon-enabled} donde el dispositivo coordinador de la  \ac{PAN}  transmite \textit{beacons} para indicar su presencia y permite que otros dispositivos encuentren la \ac{PAM} y se sincronicen. Los \textit{beacons} proporcionan información sobre las especificaciones de la super-trama, que ayuda a los dispositivos con la intención de unirse a la red a sincronizarse y conocer los parámetros de la red antes de comenzar el proceso de unión. La super-trama está dividida en periodos activo e inactivos. Durante el perido activo, los dispositivos se comunican usando el procedimiento \ac{CSMA/CA} excepto en la banda de 863MHz donde se usa el procedimiento \ac{LSB} para el acceso al canal. Los periodo inactivos permiten a los dispositivos en la red conservar energía.
+
+\subsection*{Modo Non\-Beacon}
+
+Las especificaciones IEEE 802.15.4 definen un modo de operación \textit{non-beacon} donde el coordinador de la red no envía \textit{beacons} periódicos. El modo \textit{non-beacon}  es un modo de operación asíncrono donde los dispositivos se comunican usando el mecanismo \ac{CSMA/CA}.
+
+\subsection*{Modo Frequency\-Hopping}
+
+Las aplicaciones que son desarrolladas usando el TI 15.4-Stack pueden ser configuradas para operar en redes con saltos de frecuencia donde los dispositivos de la red cambian de frecuencia. Este modo de funcionamiento está basado en el modo \ac{DFE} de las especificaciones de Wi-SUN FAN.\\
+
+
 
 \chapterend{}

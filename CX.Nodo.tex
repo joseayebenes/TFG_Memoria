@@ -87,13 +87,50 @@ Las funciones de gestión de la energía son inicializadas aquí y el módulo \ac{IC
 	\item Registra las funciones de retorno MAC
 \end{itemize} 
 
-\subsection*{Función principal}
+\subsection*{Tarea principal}
 
-% TODO completar con: http://software-dl.ti.com/simplelink/esd/simplelink_cc13x0_sdk/1.60.00.21/exports/docs/ti154stack/html/ti154stack/application-overview.html
+Después de la función de inicialización, la tarea entra en un bucle infinito ejecutando siempre las mismas tareas,  se puede ver en la figura
 
-\sectionx{Bluetooth Low Energy Advertiser}
-% TODO completar con: http://software-dl.ti.com/simplelink/esd/simplelink_cc13x0_sdk/1.60.00.21/exports/docs/ti154stack/html/ti154stack/configuring-stack.html#configuring-uble-stack
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.8\textwidth]{graphs/fig-sensor-task-flow-chart}
+	\caption{Flujo de la aplicación}
+	\label{fig:fig-sensor-task-flow-chart}
+\end{figure}
 
+
+\sectionx{Web física}
+
+La librería \ac{uBle} permite a la aplicación enviar un paquete en modo \textit{broadcast} a todos los usuarios que estén en el radio de acción del dispositivo. Este paquete de datos es el que utilizamos para notificar a los usuarios con la información de la web física.\\
+
+Los paquetes bluetooth usan la trama \textit{Eddystone-URL}, estas forman parte del núcleo de la web física. Una vez el usuario la decodifica la trama podrá acceder a la URL si tiene conexión a internet.\\
+
+\subsection*{Especificaciones  de la trama}
+
+\begin{table}
+	\centering
+	\begin{tabular}{|c|c|c|}
+		\hline 
+		Byte offset & Campo & Descripción \\ 
+		\hline 
+		0 & Tipo de trama & valor = 0x10 \\ 
+		\hline 
+		1 & Potencia TX & Potencia de TX calibrara a 0 m \\ 
+		\hline 
+		2 & Prefijo de la URL & Prefijo de la web \\ 
+		\hline 
+		3+ & URL codificada & Longitud de 1-17 bytes \\ 
+		\hline 
+	\end{tabular} 
+	\caption{Formato de la trama \textit{Eddystone-URL}}
+	\label{tab:formatoEddystone}
+\end{table}
+
+\begin{description}
+	\item[Potencia TX] La potencia de transmisión es la potencia recibida a 0 metros, en dBm, en el rango de valores  de -100 dBm a +20dBm con una resolución de 1 dBm.
+	\item[Prefijo de la URL] El prefijo de la url define la expansión utilizada por la url, por ejemplo ``http://www.'' o ``https://'' son codificadas por los bytes 0x00 o 0x03 respectivamente.
+	\item[Sufijo de la URL] El esquema de URL HTTP está definia por RFC 1738, por ejemplo ``https://goo.gl/S6zT6P'', y es usada para designar recursos accesibles usando HTTP.
+\end{description}
 
 
 \chapterend{}
