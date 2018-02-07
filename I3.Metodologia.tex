@@ -2,11 +2,11 @@
 \chapterbegin{Metodología}
 \label{chp:metod}
 
-Para la correcta realización de este \ac{TFG} se han elegido diversas herramientas y metodologías.\\
+Para la correcta realización de este \ac{TFG} se han utilizado diversas herramientas y metodologías.\\
 
 Cuando se aborda un proyecto de investigación, la primera fase consiste en investigar y aprender sobre la materia. Para esto se han utilizado tres portales principalmente: Google Académico, IEEE Xplore\R y la web de Texas Instruments. De estos portales se ha extraído la información necesaria para el desarrollo de este proyecto.\\
 
-Los proyectos software normalmente necesitan un control de versiones, para poder trazar qué cambios se han realizado en el proyecto y poder volver a versiones anteriores si fuera necesario. Para este proyecto se ha utilizado Github que es una servidor para alojar proyectos utilizando el sistema de control de versiones GIT. Al inicio del proyecto se crearon cuatro repositorios diferentes donde se ha guardado la mayor parte de la información del \ac{TFG}. Los repositorios son enumerados a continuación:
+Los proyectos software normalmente necesitan un control de versiones, para poder trazar qué cambios se han realizado en el proyecto y poder volver a versiones anteriores si fuera necesario. Para este proyecto se ha utilizado Github que es un servicio para alojar proyectos utilizando el sistema de control de versiones GIT. Al inicio del proyecto se crearon cuatro repositorios diferentes donde se ha guardado la mayor parte de la información del \ac{TFG}. Los repositorios son enumerados a continuación:
 
 \begin{description}
 	\item[TFG\_memoria] (https://github.com/joseayebenes/TFG\_Memoria) Almacena la información sobre esta memoria escrita en \LaTeX{}.
@@ -25,7 +25,7 @@ La memoria es la parte final de un proyecto, es donde se resumen la investigació
 
 Esta parte está destinada a ser ejecuta en un entorno Linux, por lo que ha sido programado en C++, usando el editor de textos SublimeText para la edición de los archivos de código.\\
 
-Uno de los inconvenientes al realizar esta parte era trabajar en un sistema operativo distinto al instalado en el ordenador, por lo que en las primeras fases del proyecto se utilizó una máquina virtual con el sistema operativo Ubuntu en VirtualBox, aunque la falta de recursos hacía lento el desarrollo. Cómo solución, se comenzó a trabajar utilizando la Raspberry Pi que finalmente se incluiría en el proyecto creando unos \textit{scripts} que automatizaban la tarea de descargar el código de GitHub, compilar y ejecutar. De esta forma se puede programar en cualquier sistema operativo y al subir los cambios a GitHub, la Raspberry Pi se los descargaba, compilaba y ejecutaba.
+Uno de los inconvenientes al realizar esta parte era trabajar en un sistema operativo distinto al instalado en el ordenador, por lo que en las primeras fases del proyecto se utilizó una máquina virtual con el sistema operativo Ubuntu en VirtualBox, aunque la falta de recursos hacía lento el desarrollo. Cómo solución, se comenzó a trabajar utilizando la Raspberry Pi que finalmente se incluiría en el proyecto creando unos \textit{scripts} que automatizaban la tarea de descargar el código de GitHub, compilar y ejecutar. De esta forma se puede programar en cualquier sistema operativo y al subir los cambios a GitHub, la Raspberry Pi se los descargaba, compilaba y ejecutaba.\\
 
 \sectionx{Servidor}
 
@@ -37,6 +37,8 @@ En la fase final, el servidor se alojó en un servidor dedicado de Amazon WebServ
 
 \sectionx{Nodo}
 
-El nodo está programado en C usando el IDE CodeComposerStudio y librerías del fabricante.
+El nodo está programado en C usando el IDE CodeComposerStudio y librerías del fabricante.\\
+
+Para facilitar el aprendizaje del funcionamiento del código tanto del Nodo como del concentrador, se ha documentado usando la herramienta Doxygen. Se podrá encontrar en el CD-ROM que acompaña a este \ac{TFG} o en formato Html en los repositorios correspondientes.
 
 \chapterend

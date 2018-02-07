@@ -15,6 +15,9 @@
 
 % 1 Información del Documento %
 \newcommand{\pfctitlename}{Título del Proyecto fin de Carrera}
+
+\newcommand{\pfctitlenameenglish}{Título del Proyecto fin de Carrera en Inglés}
+
 \newcommand{\pfcauthorname}{Nombre del autor}
 \newcommand{\pfctutorname}{Nombre del tutor}
 \newcommand{\pfcanno}{año de publicación}
@@ -123,6 +126,18 @@
 		\chapterx{#1}
 	}
 
+% substituto del comando \chapter: incluye estilo de página.
+\newcommand{\chapterAppenbegin}[1]%
+{%
+	\pagestyle{fancy}
+	\fancyhead[RO,LE]{\thepage}
+	\fancyhead[LO]{Apéndice \thechapter. #1}
+	%\fancyhead[RE]{Parte \thepart \rightmark} %
+	\fancyhead[RE]{\nouppercase{\rightmark}} %
+	
+	\chapter{#1}
+}
+
 %Fin de capítulo
 \newcommand{\chapterend}{\pagestyle{empty}\cleardoublepage \thispagestyle{empty}}
 %Si fuera un artículo en lugar un libro, \clearpage en lugar de \cleardoublepage
@@ -143,6 +158,8 @@
 
 \addto{\captionsspanish}{
 	\renewcommand{\contentsname}{Índice} }
+
+\renewcommand{\lstlistingname}{Listado}
 
 %Si se desea cambiar el tipo de letra a Arial
 % por cualquier razón, descomentar las siguientes

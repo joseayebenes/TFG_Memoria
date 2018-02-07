@@ -1,23 +1,18 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%% Documento LaTeX 																						%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Título:		Apéndice A
-% Autor:  	Ignacio Moreno Doblas
-% Fecha:  	2014-02-01
-% Versión:	0.5.0
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 \pagestyle{fancy}
 \fancyhead[LE,RO]{\thepage}
 \fancyhead[RE]{Apéndice} %
 \fancyhead[LO]{\nouppercase{\rightmark}}
 %\fancyhead[RE]{Parte \thepart \rightmark} %
 
-\chapter{Apéndice}
+\chapter{Estructuras de mensajes}
+\label{apd:estructurasMensajes}
 
-\minitoc
+\section{Mensajes OTA}
 
-\section{Primera sección}
+\lstinputlisting[caption=Archivo smsgs.h,linewidth=\textwidth,breaklines=true,language=C++]{code/smsgs.h}
 
+\section{Mensajes Protocol Buffers}
+
+\lstinputlisting[caption=Archivo appsrv.h,linewidth=\textwidth,breaklines=true,language=C++]{code/appsrv.proto}
 
 \chapterend

@@ -3,6 +3,11 @@
 \minitoc
 
 \sectionx{Introducción}
+
+En este capítulo se describe la arquitectura y funcionamiento del concentrador (nodo central). Para este desarrollo se ha utilizado el proyecto de ejemplo que proporciona el fabricante llamado \textit{TI 15.4-Stack Linux Gateway}. \\
+
+La aplicación del concentrador en Linux proporciona la funcionalidad de concentrador de la red, añadiendo una interfaz como servidor socket para comunicarse con la aplicación \textit{Gateway}. Las aplicaciones del Concentrador y \textit{Gateway} establecen un puente entre el protocolo IEEE 802.15.4 con el protocolo IP siendo una gran punto de comienzo para el \ac{IOT}.
+
 \sectionx{Diagrama de bloques y modelo de la interfaz}
 \begin{figure}[h]
 	\centering
@@ -13,7 +18,7 @@
 
 Esta sección describe la arquitectura de alto nivel basada en coprocesador, los componentes software, y  la arquitectura general del sistema (veáse figura \ref{fig:concentradorBlockDiagram}). El coprocesador es una entidad que implementa el estándar MAC IEEE 802.15.4e/g en un chip dedicado y provee una interfaz serie por la que un procesador externo controla y procesa las operaciones del coprocesador. \\
 
-El coprocesador se centra en una arquitectura escalable con una división perfecta donde el procesador ejecuta las capas sobre el IEEE 802.15.4e/g MAC/PHY.\\
+El concentrador se centra en una arquitectura escalable con una división perfecta donde el procesador ejecuta las capas sobre el IEEE 802.15.4e/g MAC/PHY.\\
 
 En esta aplicación, el programa se ejecuta en una plataforma basada en Linux. Aunque los componentes de alto nivel , pueden ser conceptualmente aplicados a otras plataformas no basadas en Linux. Los componentes desarrollados serán descritos más adelante.\\
 
@@ -59,7 +64,37 @@ La figura \ref{fig:fig-oob-dir} muestra la estructura del directorio de instalac
 	\item[scripts] Contiene fragmentos de ficheros makefile usados para compilar la aplicación de ejemplo.
 \end{description}
 
-\sectionx{Aplicación}
+\sectionx{Funcionamiento}
+
+El proyecto comienza en la función \textit{main()}  en el fichero \textit{linux\_main.c}, donde se inicializan las diferentes interfaces, se lee el fichero de configuración y ejecuta la función \textit{App\_main()} del fichero \textit{appsrv.c}.\\
+
+La función \textit{App\_main()} se encarga de inicializar los dos hilos de ejecución principales que tiene el programa, \textit{client-thread} y \textit{collector-thread}. La tarea del cliente se encarga de conectarse al servidor y procesar la transmisión y recepción de datos por ese canal. Por otro lado la tarea del concentrador, se encarga de generar la red TI 15.4-Stack y procesar los mensajes enviados por este protocolo. \\
+
+\subsection{Hilo del cliente web}
+Este hilo mantiene la comunicación con el servidor, y espera recibir un mensaje de este. Cuando un mensaje es recibido la función \textit{appsrv\_handle\_appClient\_request()} es la encargada de procesar el mensaje y notificar a la red TI 15.4-Stack a través del hilo del concentrador.
+
+\subsection{Hilo del concentrador}
+
+La función \textit{Collector\_process()} del fichero \textit{collector.c} contiene la lógica de esta tarea, que se describe en la figura ??.
+
+% TODO Incluir figura
+
+\sectionx{Protocol Buffers}
+
+Para facilitar el envío de datos entre el concentrador y el servidor, se ha utilizado \textit{Protocol Buffers}.\\
+
+\textit{Protocol Buffers} es un mecanismo flexible, eficiente y automatizado para estructurar datos estructurados. Solo es necesario indicar como se estructuran los datos y al compilarse generan la implementación en multiples lenguajes de programación de los mecanismo para codificar y descodificar datos. \\
+
+\subsection*{Funcionamiento}
+
+La estructura de los datos a codificar se definen en archivos .proto. Cada mensaje es una pequeña estructura que contiene una serie de parejas clave-valor. (Apéndice \ref{apd:estructurasMensajes} )
+
+Como se observa en el listado \ref{lst:protofield}, el formato de los mensajes es simple y similar a la definición de variables en código C. Una vez definidos los mensajes, se ejecuta el compilador de \textit{Protocol Buffers} para el lenguaje de tu aplicación, en nuestro caso C.\\
+
+\lstinputlisting[caption=Archivo appsrv.h,label=lst:protofield,linewidth=\textwidth,breaklines=true,language=C++]{code/Smsgs_msgStatsField.proto}
+
+
+Las estructuras de datos para nuestra aplicación se pueden observar en el Apéndice \ref{apd:estructurasMensajes}. En este podemos observa que hemos creado un fichero con las mismas estructuras a smsgs.h para poder convertir los mensajes que nos llegan de los nodos en mensajes  \textit{Protocol Buffers} y así poder enviarlos al servidor.
 
 
 

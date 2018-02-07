@@ -132,5 +132,36 @@ Los paquetes bluetooth usan la trama \textit{Eddystone-URL}, estas forman parte 
 	\item[Sufijo de la URL] El esquema de URL HTTP está definia por RFC 1738, por ejemplo ``https://goo.gl/S6zT6P'', y es usada para designar recursos accesibles usando HTTP.
 \end{description}
 
+\sectionx{Mensajes OTA}
+
+Los posibles mensajes entre el concentrador y el nodo, están definidos en el archivo \textit{smsgs.h} (Apéndice \ref{apd:estructurasMensajes}) .\\
+
+
+Ambos, Nodo y Concentrador tienen que tener definidos las mismas estructuras de mensajes para una correcta comunicación.
+
+
+\sectionx{Tipos de nodos}
+
+Para este proyecto se han definido dos tipo de nodos diferentes basados en la web física, uno definido como genérico y otro como nodo parking. Ambos se explicarán con más detalle a continuación.\\
+
+\subsection*{Nodo genérico}
+
+El nodo genérico es el nodo más simple de la plataforma, este permite enviar mensajes de la web física que serán definidos desde la web, además este nodo enviará periódicamente mensajes de seguimiento al servidor con información del estado del dispositivo, como por ejemplo temperatura y batería.
+
+\subsection*{Nodo parking}
+
+Este nodo hereda todas las funciones del nodo genérico pero además simulará un uso que podría tener la web física. En este caso simulará un aparcamiento de bicicletas públicas de los que se pueden encontrar por muchas ciudades (véase figura \ref{fig:bici-por-malaga}). El dispositivo simulará los estados de los candados que mantiene a cada bicicleta anclada con un array de unos y ceros, donde el uno significará abierto y el cero significará cerrado.\\
+
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.8\textwidth]{graphs/bici-por-malaga}
+	\caption{Aparcamiento de bicicletas públicas de la ciudad de Málaga}
+	\label{fig:bici-por-malaga}
+\end{figure}
+
+La idea de funcionamiento sería simple el usuario llegaría a las bicicletas, y le llegaría una notificación de la web física con un enlace donde poder elegir una bicicleta y al seleccionar una, el candado de esta se abriría. De este funcionamiento en este proyecto solamente se ha abordado la parte de poder enviar la información desde la web al nodo, dejando lo demás como línea futura de este \ac{TFG}.
+
+
 
 \chapterend{}

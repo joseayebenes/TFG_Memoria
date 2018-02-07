@@ -1,0 +1,317 @@
+/******************************************************************************
+
+ @file smsgs.proto
+
+ @brief TIMAC 2.0 - Protobuf definition for items in the smsgs.h (sensor) file
+
+*****************************************************************************/
+
+syntax = "proto2";
+
+/*!
+  Message IDs for Sensor data messages.  When sent over-the-air in a message,
+  this field is one byte.
+*/
+enum Smsgs_cmdIds
+{
+    /*! Configuration message, sent from the collector to the sensor */
+    Smsgs_cmdIds_configReq = 1;
+    /*! Configuration Response message, sent from the sensor to the collector */
+    Smsgs_cmdIds_configRsp = 2;
+
+    /*! Tracking request message, sent from the the collector to the sensor */
+    Smsgs_cmdIds_trackingReq = 3;
+     /*! Tracking response message, sent from the sensor to the collector */
+    Smsgs_cmdIds_trackingRsp = 4;
+
+    /*! Sensor data message, sent from the sensor to the collector */
+    Smsgs_cmdIds_sensorData = 5;
+
+    /*! Toggle LED message, sent from the collector to the sensor */
+    Smsgs_cmdIds_toggleLedReq = 6;
+    /*! Toggle LED response msg, sent from the sensor to the collector */
+    Smsgs_cmdIds_toggleLedRsp = 7;
+
+    /*! Change URL request message, sent from the collector to the sensor */
+    Smsgs_cmIds_changeBleUrl = 8;
+    /*! Change URL response message, sent from the sensor to the collector */
+    Smsgs_cmIds_changeBleUrlRsp = 9;
+
+    /*! Bike parking state message, sent from the sensor to the collector*/
+    Smsgs_cmIds_bikeParkingState = 10;
+    /*! Bike Select message, sent from the sensor to the collector*/
+    Smsgs_cmIds_bikeSelect = 11;
+    /*! Bike parking state, sent from the sensor to the collector*/
+    Smsgs_cmIds_bikeParkingStateRsp = 12;
+
+} 
+
+/*!
+  Frame Control field states what data fields are included in reported
+  sensor data, each value is a bit mask value so that they can be combined
+  (OR'd together) in a control field.
+  When sent over-the-air in a message this field is 2 bytes.
+*/
+enum Smsgs_dataFields
+{
+    /*! Temperature Sensor */
+    Smsgs_dataFields_tempSensor = 0x0001;
+    /*! Message Statistics */
+    Smsgs_dataFields_msgStats = 0x0002;
+    /*! Config Settings */
+    Smsgs_dataFields_configSettings = 0x0004;
+}
+
+/*!
+  Status values for the over-the-air messages
+*/
+enum Smsgs_statusValues
+{
+    /*! Success */
+    Smsgs_statusValues_success = 0;
+    /*! Message was invalid and ignored */
+    Smsgs_statusValues_invalid = 1;
+    /*!
+      Config message was received but only some frame control fields
+      can be sent or the reportingInterval or pollingInterval fail
+      range checks.
+    */
+    Smsgs_statusValues_partialSuccess = 2;
+}
+
+enum Smsgs_typeNode
+{
+  Smsgs_typeNode_simpleNode = 0x01;
+  Smsgs_typeNode_parkingBike = 0x02;
+  //add new type
+}
+
+/******************************************************************************
+ Structures - Building blocks for the over-the-air sensor messages
+*****************************************************************************/
+
+/*!
+  Configuration Request message: sent from controller to the sensor.
+*/
+message Smsgs_configReqMsg
+{
+    /*! Command ID - 1 byte */
+    required Smsgs_cmdIds cmdId = 1;
+    /*! Reporting Interval */
+    required uint32 reportingInterval = 2;
+    /*! Polling Interval */
+    required uint32 pollingInterval = 3;
+    /*! Time now */
+    required uint32 timeNow=4;
+    /*! URL ble */
+    required string url = 5;
+}
+
+/*!
+  Configuration Response message: sent from the sensor to the collector
+  in response to the Configuration Request message.
+*/
+message Smsgs_configRspMsg
+{
+    /*! Command ID - 1 byte */
+    required Smsgs_cmdIds cmdId = 1;
+    /*! Response Status - 1 byte */
+    required Smsgs_statusValues status = 2;
+    /*! Type Node - 1 byte*/
+    required Smsgs_typeNode type = 3;
+    /*! Frame Control field - bit mask of Smsgs_dataFields */
+    required uint32 frameControl = 4;
+    /*! Reporting Interval */
+    required uint32 reportingInterval = 5;
+    /*! Polling Interval */
+    required uint32 pollingInterval = 6;
+    /*! Time now */
+    required uint32 timeNow=7;
+    /*! URL BLE  */
+    required string url = 8;
+    /*! BikeParking State - only if type is Smsgs_typeNode_parkingBike*/
+    optional uint32 bikeParkingState = 9;
+}
+
+/*!
+  Tracking Request message: sent from controller to the sensor.
+*/
+message Smsgs_trackingReqMsg
+{
+    /*! Command ID */
+    required Smsgs_cmdIds cmdId = 1;
+}
+
+/*!
+  Tracking Response message: sent from the sensor to the collector
+  in response to the Tracking Request message.
+*/
+message Smsgs_trackingRspMsg
+{
+    /*! Command ID */
+    required Smsgs_cmdIds cmdId = 1;
+} 
+
+/*!
+ Toggle Request message: sent from controller to the sensor.
+ */
+message Smsgs_toggleLedReqMsg 
+{
+    /*! Command ID - 1 byte */
+    required Smsgs_cmdIds cmdId = 1;
+} 
+
+/*!
+ Toggle Response message: sent from sensor to the controller.
+ */
+message Smsgs_toggleLedRspMsg
+{
+    /*! Command ID - 1 byte */
+    required Smsgs_cmdIds cmdId = 1;
+    /*! Response Status - 2 bytes */
+    required uint32 ledState = 2;
+} 
+
+
+/*!
+  Temp Sensor Field
+*/
+message Smsgs_tempSensorField
+{
+    /*!
+      Ambience Chip Temperature - each value represents a 0.01 C
+      degree, so a value of 2475 represents 24.75 C.
+    */
+    required uint32 ambienceTemp = 1;
+    /*!
+      Object Temperature - each value represents a 0.01 C
+      degree, so a value of 2475 represents 24.75 C.
+    */
+    required uint32 objectTemp = 2;
+}
+
+
+/*!
+  Message Statistics Field
+*/
+message Smsgs_msgStatsField
+{
+    /*! total number of join attempts (associate request sent) */
+    required uint32 joinAttempts = 1;
+    /*! total number of join attempts failed */
+    required uint32 joinFails = 2;
+    /*! total number of sensor data messages attempted. */
+    required uint32 msgsAttempted = 3;
+    /*! total number of sensor data messages sent. */
+    required uint32 msgsSent = 4;
+    /*! total number of tracking requests received */
+    required uint32 trackingRequests = 5;
+    /*! total number of tracking response attempted */
+    required uint32 trackingResponseAttempts = 6;
+    /*! total number of tracking response success */
+    required uint32 trackingResponseSent = 7;
+    /*!
+      Total number of Channel Access Failures.  These are indicated in MAC data
+      confirms for MAC data requests.
+    */
+    required uint32 channelAccessFailures = 8;
+    /*!
+      Total number of MAC ACK failures. These are indicated in MAC data
+      confirms for MAC data requests.
+    */
+    required uint32 macAckFailures = 9;
+    /*!
+      Total number of MAC data request failures, other than channel access
+      failure or MAC ACK failures.
+    */
+    required uint32 otherDataRequestFailures = 10;
+    /*! Total number of sync loss failures received for sleepy devices. */
+    required uint32 syncLossIndications = 11;
+}
+
+/*!
+  Message Statistics Field
+*/
+message Smsgs_configSettingsField
+{
+    /*!
+      Reporting Interval - in millseconds, how often to report, 0
+      means reporting is off
+    */
+    required uint32 reportingInterval = 1;
+    /*!
+      Polling Interval - in millseconds (32 bits) - If the sensor device is
+      a sleep device, this states how often the device polls its parent for
+      data. This field is 0 if the device doesn't sleep.
+    */
+    required uint32 pollingInterval = 2;
+}
+
+
+/*!
+  Sensor Data message: sent from the sensor to the collector
+*/
+message Smsgs_sensorMsg
+{
+    /*! Command ID */
+    required Smsgs_cmdIds cmdId = 1;
+    /*! Dummy value so we have a fixed item */
+    required uint32 frameControl = 2; /*uint16_t*/
+    /*! Battery field */
+    required uint32 battery =3;
+    /*!
+      Temp Sensor field 
+    */
+    optional Smsgs_tempSensorField tempSensor = 4;
+    /*!
+      Message Statistics field
+    */
+    optional Smsgs_msgStatsField msgStats = 5;
+    /*!
+      Configuration Settings field
+    */
+    optional Smsgs_configSettingsField configSettings = 6;
+}
+
+
+message Smsgs_changeUrlReqMsg 
+{
+    /*! Command ID - 1 byte */
+    required Smsgs_cmdIds cmdId = 1;
+    required string url =2;
+} 
+
+message Smsgs_changeUrlRspMsg 
+{
+    /*! Command ID - 1 byte */
+    required Smsgs_cmdIds cmdId = 1;
+    required string url =2;
+} 
+
+
+/*!
+  Parking State message: sent from the collector to the sensor
+ */
+ message Smsgs_bikeParkingStateReqMsg
+ {
+  required Smsgs_cmdIds cmdId = 1;
+ }
+
+/*!
+ BycicleSelect request message: sent from the collector to the sensor
+ */
+message Smsgs_bikeSelectReqMsg
+{
+    /*! Command ID - 1 byte */
+    required Smsgs_cmdIds cmdId = 1;
+    required uint32 bikeNumber =2;
+}
+
+/*!
+  Parking State response message: sent from the sensor to the collector
+ */
+ message Smsgs_parkingStateRspMsg
+ {
+  required Smsgs_cmdIds cmdId = 1;
+  required uint32 bikeParking =2 ;
+ }

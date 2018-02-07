@@ -1,0 +1,234 @@
+syntax = "proto2";
+
+import "smsgs.proto";
+import "api_mac.proto";
+import "llc.proto";
+import "cllc.proto";
+import "csf.proto";
+
+/* MT System ID for TIMAC APP Server Interface Protobuf sub-system ID */
+enum timacAppSrvSysId
+{
+  RPC_SYS_PB_TIMAC_APPSRV = 10;
+}
+
+/* Command IDs - each of these are associated with Request, 
+ * Responses, Indications, and Confirm messages 
+ */
+enum appsrv_CmdId
+{
+  APPSRV_DEVICE_JOINED_IND = 1;
+  APPSRV_DEVICE_LEFT_IND = 2;
+  APPSRV_NWK_INFO_IND = 3;
+  APPSRV_GET_NWK_INFO_REQ = 4;
+  APPSRV_GET_NWK_INFO_RSP = 5;
+  APPSRV_GET_NWK_INFO_CNF = 6;
+  APPSRV_GET_DEVICE_ARRAY_REQ = 7;
+  APPSRV_GET_DEVICE_ARRAY_CNF = 8;
+  APPSRV_DEVICE_NOTACTIVE_UPDATE_IND = 9;
+  APPSRV_DEVICE_DATA_RX_IND = 10;
+  APPSRV_COLLECTOR_STATE_CNG_IND = 11;
+  APPSRV_SET_JOIN_PERMIT_REQ = 12;
+  APPSRV_SET_JOIN_PERMIT_CNF = 13;
+  APPSRV_TX_DATA_REQ = 14;
+  APPSRV_TX_DATA_CNF = 15;
+  APPSRV_GET_COLLECTOR_STATS_REQ = 16;
+  APPSRV_GET_COLLECTOR_STATS_RSP = 17;
+}
+
+enum nwkMode
+{
+    BEACON_ENABLED = 1;
+    NON_BEACON = 2;
+    FREQUENCY_HOPPING = 3;
+}
+
+// APPSRV_TX_DATA_REQ
+message appsrv_txDataReq
+{
+    required appsrv_CmdId cmdId = 1 [default = APPSRV_TX_DATA_REQ];  // don't change this field
+    required Smsgs_cmdIds msgId = 2;
+    required ApiMac_deviceDescriptor devDescriptor = 3;
+    optional Smsgs_configReqMsg configReqMsg = 4;
+    optional Smsgs_toggleLedReqMsg toggleLedReq = 5;
+    optional Smsgs_changeUrlReqMsg changeUrlReq = 6;
+    optional Smsgs_bikeSelectReqMsg bikeSelectReq = 7;
+    optional Smsgs_bikeParkingStateReqMsg parkingStateReq = 8;
+}
+
+
+//APPSRV_TX_DATA_CNF
+message appsrv_txDataCnf
+{
+  required appsrv_CmdId cmdId = 1 [default = APPSRV_TX_DATA_CNF]; // don't change this field
+  required int32 status = 2; 
+}
+
+// APPSRV_SET_JOIN_PERMIT_REQ
+message appsrv_setJoinPermitReq
+{
+    required appsrv_CmdId cmdId = 1 [default = APPSRV_SET_JOIN_PERMIT_REQ];  // don't change this field
+ //   duration - duration for join permit to be turned on in
+ //              milliseconds.
+ //              0 sets it Off, 0xFFFFFFFF sets it ON indefinitely
+ //              Any other non zero value sets it on for that duration */
+    required int32 duration = 2;
+    
+}
+// APPSRV_SET_JOIN_PERMIT_CNF
+message appsrv_setJoinPermitCnf
+{
+  // provides the result of processing of the 
+  // APPSRV_SET_JOIN_PERMIT_REQ message
+  required int32 status = 1;
+}
+
+// APPSRV_DEVICE_JOINED_IND
+message appsrv_deviceUpdateInd
+{
+    required ApiMac_deviceDescriptor devDescriptor = 1;
+    required ApiMac_capabilityInfo devCapInfo = 2;
+}
+
+// APPSRV_DEVICE_NOTACTIVE_UPDATE_IND
+message appsrv_deviceNotActiveUpdateInd
+{
+    required ApiMac_deviceDescriptor devDescriptor = 1;
+    required uint32 timeout = 2;
+}
+
+
+// APPSRV_DEVICE_DATA_RX_IND
+message appsrv_deviceDataRxInd
+{
+    required ApiMac_sAddr srcAddr = 1;
+    required sint32 rssi = 2;
+    optional Smsgs_sensorMsg sDataMsg = 4; 
+    optional Smsgs_configRspMsg sConfigMsg = 5;
+    optional Smsgs_changeUrlRspMsg sUrlMsg = 6;
+    optional Smsgs_parkingStateRspMsg sParkingStateMsg = 7;
+}
+
+message appsrv_collectorStateCngUpdateInd
+{
+    required uint32 state = 1;
+}
+
+// sub-message for the network parameters
+// used by appsrv_nwkInfoUpdateInd 
+// and appsrv_getNwkInfoCnf
+message appsrv_nwkParam
+{
+    required Llc_netInfo nwkInfo = 1;
+    required int32 securityEnabled = 2;
+    required nwkMode networkMode = 3;
+    required Cllc_states state = 4;
+}
+
+message appsrv_nwkInfoUpdateInd
+{
+   required appsrv_nwkParam nwkinfo = 1;
+}
+
+// APPSRV_GET_NWK_INFO_REQ
+message appsrv_getNwkInfoReq
+{
+  // APPSRV_GET_NWK_INFO_REQ - command ID used to identify this message
+  // Get network Information Request - This API is called by the appClient application to retrieve
+  // the network information
+  // Returns appsrv_getNwkInfoRsp_t 
+
+  required appsrv_CmdId cmdId = 1 [default = APPSRV_GET_NWK_INFO_REQ];  // don't change this field
+}
+
+// APPSRV_GET_NWK_INFO_CNF
+message appsrv_getNwkInfoCnf
+{
+  // APPSRV_GET_NWK_INFO_REQ - command ID used to identify this message
+  // Get network Information Request - This API is called by the appClient application to retrieve
+  // the network information
+  
+    required appsrv_CmdId cmdId = 1 [default = APPSRV_GET_NWK_INFO_CNF];  // don't change this field
+    required uint32 status = 2;
+    optional appsrv_nwkParam nwkinfo = 3;
+    
+}
+
+// APPSRV_GET_DEVICE_ARRAY_REQ
+message appsrv_getDeviceArrayReq
+{
+  // APPSRV_GET_DEVICE_ARRAY_REQ - command ID used to identify this message
+  // Get list of the connected devices Request 
+  // This API is called by the appClient application to retrieve
+  // the list of currently connected devices 
+  // Returns appsrv_getNwkInfoCnf 
+
+  required appsrv_CmdId cmdId = 1 [default = APPSRV_GET_DEVICE_ARRAY_REQ];  // don't change this field
+}
+
+// APPSRV_GET_DEVICE_ARRAY_CNF
+message appsrv_getDeviceArrayCnf
+{
+    required appsrv_CmdId cmdId = 1 [default = APPSRV_GET_DEVICE_ARRAY_CNF];  // don't change this field
+    required uint32 status = 2;
+    repeated Csf_deviceInformation devInfo = 3;
+}
+
+message appsrv_getCollectorStatsReq
+{
+  required appsrv_CmdId cmdId = 1 [default = APPSRV_GET_COLLECTOR_STATS_REQ];
+}
+
+message appsrv_getCollectorStatsRsp
+{
+  required appsrv_CmdId cmdId = 1 [default = APPSRV_GET_COLLECTOR_STATS_RSP];
+  /*!
+  Total number of tracking request messages attempted
+  */
+  required uint32 trackingRequestAttempts = 2;
+  /*!
+  Total number of tracking request messages sent
+  */
+  required uint32 trackingReqRequestSent= 3;
+  /*!
+  Total number of tracking response messages received
+  */
+  required uint32 trackingResponseReceived= 4;
+  /*!
+  Total number of config request messages attempted
+  */
+  required uint32 configRequestAttempts= 5;
+  /*!
+  Total number of config request messages sent
+  */
+  required uint32 configReqRequestSent= 6;
+  /*!
+  Total number of config response messages received
+  */
+  required uint32 configResponseReceived= 7;
+  /*!
+  Total number of sensor messages received
+  */
+  required uint32 sensorMessagesReceived= 8;
+  /*!
+  Total number of failed messages because of channel access failure
+  */
+  required uint32 channelAccessFailures= 9;
+  /*!
+  Total number of failed messages because of ACKs not received
+  */
+  required uint32 ackFailures= 10;
+  /*!
+  Total number of failed transmit messages that are not channel access
+  failure and not ACK failures
+  */
+  required uint32 otherTxFailures= 11;
+  /*! Total number of RX Decrypt failures. */
+  required uint32 rxDecryptFailures= 12;
+  /*! Total number of TX Encrypt failures. */
+  required uint32 txEncryptFailures= 13;
+  /* Total Transaction Expired Count */
+  required uint32 txTransactionExpired= 14;
+  /* Total transaction Overflow error */
+  required uint32 txTransactionOverflow= 15;
+}

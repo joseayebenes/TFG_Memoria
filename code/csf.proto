@@ -1,0 +1,19 @@
+/******************************************************************************
+
+ @file csf.proto
+
+ @brief TIMAC 2.0 - Protobuf definition for items in the csf.h file
+
+ *****************************************************************************/
+
+syntax = "proto2";
+
+import "api_mac.proto";
+
+
+/*! for use by web interface */
+message Csf_deviceInformation {
+    required ApiMac_deviceDescriptor devInfo = 1;
+    required ApiMac_capabilityInfo   capInfo = 2;
+}
+

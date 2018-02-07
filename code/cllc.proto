@@ -1,0 +1,80 @@
+/******************************************************************************
+
+ @file cllc.proto
+
+ @brief TIMAC 2.0 - Protobuf definition for items in the cllc.h file
+
+*****************************************************************************/
+
+syntax = "proto2";
+
+import "api_mac.proto";
+
+/*!
+ Coordinator State Values
+ */
+enum Cllc_states
+{
+    /*! Powered up, not started and waiting for user to start */
+    Cllc_states_initWaiting = 1;
+    /*! Starting coordinator, scanning and selecting the best parameters */
+    Cllc_states_startingCoordinator = 2;
+    /*!
+     Powered up, found network information, and restoring device in network
+     */
+    Cllc_states_initRestoringCoordinator = 3;
+    /*! Device is operating as coordinator */
+    Cllc_states_started = 4;
+    /*! Device is restored as coordinator in the network */
+    Cllc_states_restored = 5;
+    /*! Joining allowed state has changed to allowed */
+    Cllc_states_joiningAllowed = 6;
+    /*! Joining allowed state has changed to not allowed */
+    Cllc_states_joiningNotAllowed = 7;
+}
+
+
+/*!
+ Coordinator starting State Values
+ */
+enum Cllc_coord_states
+{
+    /*! Initialized state */
+    Cllc_coordStates_initialized = 0;
+    /*! MAC  coordinator is performing a active scan  */
+    Cllc_coordStates_scanActive = 1;
+    /*! active scan  confirm received*/
+    Cllc_coordStates_scanActiveCnf = 2;
+    /*! Eneergy detect scan confirm received */
+    Cllc_coordStates_scanEdCnf = 3;
+    /*! Start confirm received */
+    Cllc_coordStates_startCnf = 4;
+}
+
+/*! Building block for association table */
+message Cllc_associated_devices
+{
+    /*! Short address of associated device */
+    required uint32 shortAddr = 1;;
+    /*! capability information */
+    required ApiMac_capabilityInfo capInfo = 2;
+    /*! RSSI */
+    required sint32 rssi = 3;
+    /*! Device alive status */
+    required uint32 status = 4;
+}
+
+/*! Cllc statistics */
+message Cllc_statistics
+{
+    /*! number of PA Solicit messages received */
+    required  uint32 fhNumPASolicitReceived = 1;
+    /*! number of PA messages sent */
+    required uint32 fhNumPASent = 2;
+    /*! number of PC Solicit messages received */
+    required uint32 fhNumPANConfigSolicitsReceived = 3;
+    /*! number of PC messages sent */
+    required uint32 fhNumPANConfigSent = 4;
+    required uint32 otherStats = 5;
+}
+

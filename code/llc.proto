@@ -1,0 +1,34 @@
+/******************************************************************************
+
+ @file llc.proto
+
+ @brief TIMAC 2.0 - Protobuf definition for items in the llc.h file
+
+*****************************************************************************/
+
+syntax = "proto2";
+
+import "api_mac.proto";
+
+/*! Network Information */
+message Llc_netInfo
+{
+    /*! true if network is frequency hopping */
+	required     uint32 fh = 1;
+    /*! Channel - non FH */
+    required uint32 channel = 2;
+    /* Address information */
+    required     ApiMac_deviceDescriptor devInfo = 3;
+}
+
+/* Structure to store a device list entry in NV */
+message Llc_deviceListItem
+{
+    /* Address information */
+    required ApiMac_deviceDescriptor devInfo = 1;
+    /* Device capability */
+    required ApiMac_capabilityInfo capInfo = 2;
+    /* RX frame counter */
+    required uint32 rxFrameCounter = 3;
+}
+

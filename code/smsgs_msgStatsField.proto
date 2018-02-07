@@ -1,0 +1,16 @@
+/*!
+  Configuration Request message: sent from controller to the sensor.
+*/
+message Smsgs_configReqMsg
+{
+    /*! Command ID - 1 byte */
+    required Smsgs_cmdIds cmdId = 1;
+    /*! Reporting Interval */
+    required uint32 reportingInterval = 2;
+    /*! Polling Interval */
+    required uint32 pollingInterval = 3;
+    /*! Time now */
+    required uint32 timeNow=4;
+    /*! URL ble */
+    required string url = 5;
+}

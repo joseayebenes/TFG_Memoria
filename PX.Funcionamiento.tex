@@ -1,7 +1,109 @@
-\chapterbegin{Explicación de funcionamiento}
+\chapterbegin{Funcionamiento}
 \label{chp:funcionamiento}
 \minitoc
 
-\sectionx{Iniciar el sistema}
+\sectionx{Inicio de la red}
+
+
+\subsection*{1. Iniciar el servidor}
+
+El primer paso es iniciar el servidor, ya que toda la red depende de este. Como se ha utilizado Amazon Web Services, desde su web iniciamos la instancia que corre en el inicio el servidor de la aplicación (véase figura \ref{fig:screenAWS}.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\textwidth]{graphs/screenAWS.PNG}
+	\caption{Web de gestión de instancias en Amazon Web Services}
+	\label{fig:screenAWS}
+\end{figure}
+
+Después de iniciar el servidor, es posible acceder a la web de gestión desde la dirección dns de la instancia del servidor en el puerto 5000. Inicialmente el concentrador no está conectado por lo que nos aparece un mensaje indicándolo, figura \ref{fig:screenWebNotConnected}.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\textwidth]{graphs/screenWebNotConnected.PNG}
+	\caption{Apariencia de la web cuando no está conectado el concentrador}
+	\label{fig:screenWebNotConnected}
+\end{figure}
+
+\subsection*{2. Encender concentrador}
+
+Antes de enceder la RaspberryPi, conectamos el coprocesador por USB y damos conexión a Internet a la RaspberryPi. La RaspberryPi está configurada para ejecutar el programa del concentrador y conectarse al servidor, por lo que no es necesaria más interacción con el concentrador. Después de encenderse la RaspberryPi, la web habrá cambiado y ahora ya nos indicará algunos parámetros de la web, figura \ref{fig:screenWebConnected}.\\
+
+En la parte superior de la web se observan los parámetros de la red como son su dirección PAN, el estado que indica si la red permite la conexión de los nodos, el tipo de comunicación y si está activada la seguridad.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{graphs/screenWebConnected.PNG}
+	\caption{Apariencia de la web cuando ya está conectado el concentrador}
+	\label{fig:screenWebConnected}
+\end{figure}
+
+\subsection*{2. Encender nodos}
+
+Encendemos todos los nodos necesarios, en las pruebas realizadas hemos utilizado dos.
+
+
+\subsection*{3. Permitir conexiones de los nodos}
+
+Para permitir la conexión de los nodos a la red, es necesario poner el botón ``\textit{JOIN PERMIT}'' a ``ON''. Después de eso, los nodos que ya haya encendidos, se conectarán a la red y aparecerán en la web.\\
+
+En la figura \ref{fig:screenWebConnectedOpenTwoDevices} se observa la apariencia de la web cuando dos dispositivos está conectados.  En la parte central se observa una gráfica con potencia de la señal de cada uno de los nodos en dBi, y en la parte inferior estadísticas generales de la red.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{graphs/screenWebConnectedOpenTwoDevices.PNG}
+	\caption{Apariencia de la web cuando hay dos nodos conectados}
+	\label{fig:screenWebConnectedOpenTwoDevices}
+\end{figure}
+
+\sectionx{Administración de los nodos}
+
+Si se hace click en la barra de navegación derecha en el botón ``\textit{Nodes}'', se accede al panel de administración de los nodos, en el aparecen la lista de nodos conectados y la información relevante de cada uno, como se observa en la figura \ref{fig:screenWebNodes}.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{graphs/screenWebNodes.PNG}
+	\caption{Panel de administración de los nodos}
+	\label{fig:screenWebNodes}
+\end{figure}
+
+Haciendo click en alguno de los botones ``\textit{View}'', se accede a la administración del nodo correspondiente, como se aprecia en la tabla hay dos tipos de nodos, uno representado con una bicicleta y el otro con el símbolo de un microcontrolador, que representan un nodo destinado al control de un parking de bicicletas y un nodo genérico de información respectivamente. Cada tipo de nodo tiene una interfaz de administración diferente.
+
+\subsection*{Administración de nodo genérico}
+
+En la figura \ref{fig:screenWebNodeGenericDetails}, se puede observar toda la información relevante sobre el nodo seleccionado.\\
+
+En el cuadro de ``\textit{Physical Web - URL}'' es posible modificar la URL que envía dicho nodo. Justo debajo del título aparece la URL que actualmente está enviando. En el cuadro se puede introducir cualquier URL de tipo HTTPs y al hacer click en el botón se enviará el cambio al nodo.\\
+
+También es posible indicar cuales son las coordenadas del nodo desde el cuadro ``\textit{Position}''.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\textwidth]{graphs/screenWebNodeGenericDetails.PNG}
+	\caption{Panel de administración de un nodo tipo genérico}
+	\label{fig:screenWebNodeGenericDetails}
+\end{figure}
+
+\subsection*{Administración de un tipo parking de bicicletas}
+
+El panel de administración de este tipo de nodo se observa en la figura \ref{fig:screenWebNodeBikeDetails}. Esta web permite lo mismo que la web de un nodo genérico, pero además hay un cuadro llamado ``\textit{Parking}'', en este cuadro se observaría el estado de cada anclaje del parkin, y si se hace click en cualquiera de ellos el estado del anclaje cambiaría de abierto a cerrado o vicerversa. Esta función está simulada en el nodo como un array donde se guardan los estados de los candados.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{graphs/screenWebNodeBikeDetails.PNG}
+	\caption{Panel de administración de un tipo parking de bicicletas}
+	\label{fig:screenWebNodeBikeDetails}
+\end{figure}
+
+\sectionx{Mapa}
+
+Desde la web también es posible observar donde está cada nodo en la red, para ello accediendo desde la barra lateral a la opción ``\textit{Map}'' se observa un mapa como el que se puede observar en la figura \ref{fig:screenWebMap}. En este mapa podemos observar las posiciones de los nodos que se han indicado en sus respectivos paneles de administración y además desde el formulario inferior es posible cambiar la posición del concentrador y su radio de alcance. Con esto es posible tener una idea de si alguno de los nodos se ha colocado demasiado cerca del borde del alcance del concentrador.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{graphs/screenWebMap.PNG}
+	\caption{Vista del mapa con las posiciones de los nodos}
+	\label{fig:screenWebMap}
+\end{figure}
 
 \chapterend{}
