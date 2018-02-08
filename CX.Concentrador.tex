@@ -33,7 +33,7 @@ Componentes software:
 \end{description}
 
 \sectionx{Descripción del SDK}
-\begin{figure}{h}
+\begin{figure}[h]
 	\begin{center}
 		\includegraphics[width=0.5\textwidth]{graphs/fig-oob-dir}
 	\end{center}
@@ -91,7 +91,7 @@ La estructura de los datos a codificar se definen en archivos .proto. Cada mensa
 
 Como se observa en el listado \ref{lst:protofield}, el formato de los mensajes es simple y similar a la definición de variables en código C. Una vez definidos los mensajes, se ejecuta el compilador de \textit{Protocol Buffers} para el lenguaje de tu aplicación, en nuestro caso C.\\
 
-\lstinputlisting[caption=Archivo appsrv.h,label=lst:protofield,linewidth=\textwidth,breaklines=true,language=C++]{code/Smsgs_msgStatsField.proto}
+\lstinputlisting[caption=Ejemplo de estructura con Protocol Buffers,label=lst:protofield,linewidth=\textwidth,breaklines=true,language=C++]{code/Smsgs_msgStatsField.proto}
 
 
 Las estructuras de datos para nuestra aplicación se pueden observar en el Apéndice \ref{apd:estructurasMensajes}. En este podemos observa que hemos creado un fichero con las mismas estructuras a smsgs.h para poder convertir los mensajes que nos llegan de los nodos en mensajes  \textit{Protocol Buffers} y así poder enviarlos al servidor.

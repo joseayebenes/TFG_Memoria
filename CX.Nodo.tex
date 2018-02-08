@@ -48,7 +48,7 @@ En la figura \ref{fig:fig-example-application-block-diagram} se muestra el diagr
 Descripción a alto nivel de varios bloques de la figura \ref{fig:fig-example-application-block-diagram}:
 
 \begin{description}
-	\item[Aplication:] Este bloque .....
+	\item[Aplication:] Este bloque contiene la lógica específica de la aplicación a desarrollar.
 	\item[Logical Link Controller:] Implementa varias funciones específicas del IEEE 802.15.4 o Wi-SUN (para una configuración \textit{frequency-hopping}) para formación, conexión y reconexión de la red. 
 	\item[TI-RTOS Start-up Code:] Inicializa la aplicación.
 	\item[Utility Functions] Provee varias utilidades para usar LCD, temporizadores, botones y más.
@@ -58,7 +58,7 @@ Descripción a alto nivel de varios bloques de la figura \ref{fig:fig-example-app
 
 \sectionx{Función de inicio}
 
-La función \textit{main()} dentro del archivo main.c es el punto de inicio de la ejecución de la aplicación. En este punto los componentes relaciones con la placa son inicializados. Las tareas se configuran en eta función, inicializando los parámetros necesarios como su prioridad y su tamaño en la pila. En el paso final, las interrupciones se habilitan y el planificador \textit{SYS/BIOS} se inicia llamando a \textit{BIOS\_start()}.
+La función \textit{main()} dentro del archivo \textit{main.c} es el punto de inicio de la ejecución de la aplicación. En este punto los componentes relaciones con la placa son inicializados. Las tareas se configuran en eta función, inicializando los parámetros necesarios como su prioridad y su tamaño en la pila. En el paso final, las interrupciones se habilitan y el planificador \textit{SYS/BIOS} se inicia llamando a \textit{BIOS\_start()}.
 
 
 \sectionx{Arquitectura general de la aplicación}
