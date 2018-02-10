@@ -44,16 +44,15 @@ En la figura \ref{fig:fig-example-application-block-diagram} se muestra el diagr
 	\caption{Diagrama de bloques de la aplicación}
 	\label{fig:fig-example-application-block-diagram}
 \end{figure}
-% TODO Modificar imagen para 
-Descripción a alto nivel de varios bloques de la figura \ref{fig:fig-example-application-block-diagram}:
+
 
 \begin{description}
-	\item[Aplication:] Este bloque contiene la lógica específica de la aplicación a desarrollar.
-	\item[Logical Link Controller:] Implementa varias funciones específicas del IEEE 802.15.4 o Wi-SUN (para una configuración \textit{frequency-hopping}) para formación, conexión y reconexión de la red. 
-	\item[TI-RTOS Start-up Code:] Inicializa la aplicación.
-	\item[Utility Functions] Provee varias utilidades para usar LCD, temporizadores, botones y más.
-	\item[Application-Specific Functions:] Implementa funciones como guardado de datos, y provee una interfaz para gestionar pulsaciones botones o mostrar información esencial en un LCD.
-	\item[TI 15.4-Stack API Module (API MAC Module):] Este módulo proporciona una interfaz para gestión y los servicios de datos del 802.15.4 stack mediante el módulo \ac{ICall}.
+	\item[Aplicación:] Este bloque contiene la lógica específica de la aplicación a desarrollar.
+	\item[Controlador de lógica de enlace:] Implementa varias funciones específicas del IEEE 802.15.4 o Wi-SUN (para una configuración \textit{frequency-hopping}) para formación, conexión y reconexión de la red. 
+	\item[Inicio de TI-RTOS:] Inicializa la aplicación.
+	\item[Funciones útiles] Provee varias utilidades para usar LCD, temporizadores, botones y más.
+	\item[Funciones específicas:] Implementa funciones como guardado de datos, y provee una interfaz para gestionar pulsaciones botones o mostrar información esencial en un LCD.
+	\item[TI 15.4-Stack API (API MAC Module):] Este módulo proporciona una interfaz para gestión y los servicios de datos del 802.15.4 stack mediante el módulo \ac{ICall}.
 \end{description}
 
 \sectionx{Función de inicio}
