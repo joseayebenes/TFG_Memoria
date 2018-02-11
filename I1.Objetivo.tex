@@ -1,4 +1,3 @@
-
 \chapterbegin{Objetivos}
 \label{chp:objetivo}
 
@@ -6,7 +5,30 @@ La web física es un término que describe la forma de comunicar cualquier objeto 
 
 El modelo que plantea la web física, los objetos pueden necesitan un canal por donde enviar y recibir datos y el problema se agrava cuando los objetos están distribuidos y no tienen cerca un punto de acceso a internet o tienen que funcionar con baterías. En estos casos, buscar una solución de comunicación inalámbrica de gran alcance y bajo consumo es prioritario.\\
 
-Con estos conceptos en mente, el presente trabajo de fin de grado va a abordar el concepto de web física, implementando una red inalámbrica que permita comunicarse con los objetos con el fin de ser una red versátil. Finalmente, esta tecnología se aplicará en un caso concreto de uso.
+Con estos conceptos en mente, el presente trabajo de fin de grado va a abordar el concepto de web física, implementando una red inalámbrica que permita comunicarse con los objetos con el fin de ser una red versátil. 
+
+\subsection*{Aplicación de ejemplo}
+
+Para comprobar el funcionamiento de la red, se realizará una aplicación de ejemplo que podría simular la aplicación a una ciudad inteligente donde la red tendría dos nodos diferentes: nodo genérico y nodo aparcamiento\\
+
+
+\subsubsection*{Nodo genérico}
+
+El nodo genérico es el nodo más simple de la plataforma, este permite enviar mensajes de la web física que serán definidos desde la web, además este nodo enviará periódicamente mensajes de seguimiento al servidor con información del estado del dispositivo, como por ejemplo temperatura y batería.
+
+\subsubsection*{Nodo aparcamiento}
+
+Este nodo hereda todas las funciones del nodo genérico pero además simulará un uso que podría tener la web física. En este caso simulará un aparcamiento de bicicletas públicas de los que se pueden encontrar por muchas ciudades (véase figura \ref{fig:bici-por-malaga}). El dispositivo simulará los estados de los candados que mantiene a cada bicicleta anclada con un array de unos y ceros, donde el uno significará abierto y el cero significará cerrado.\\
+
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.8\textwidth]{graphs/bici-por-malaga}
+	\caption{Aparcamiento de bicicletas públicas de la ciudad de Málaga}
+	\label{fig:bici-por-malaga}
+\end{figure}
+
+La idea de funcionamiento sería simple el usuario llegaría a las bicicletas, y le llegaría una notificación de la web física con un enlace donde poder elegir una bicicleta y al seleccionar una, el candado de esta se abriría. De este funcionamiento en este proyecto solamente se ha abordado la parte de poder enviar la información desde la web al nodo, dejando lo demás como línea futura de este \ac{TFG}.
 
 
 \chapterend{}

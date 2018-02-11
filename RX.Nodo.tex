@@ -1,0 +1,142 @@
+
+
+
+\subsection*{Introducción}
+
+La aplicación implementa el dispositivo de la red, que le permite conectarse a la red creada por el concentrador. El sensor periódicamente envía reportes de datos en intervalos configurados por el concentrador y este responde con mensajes de rastreo.
+
+\subsection*{Arquitectura Hardware}
+
+\subsection*{ARM Cortex M0 (Núcleo radio)}
+El núcleo \ac{CM0} en el CC1350 es responsable de la interfaz audio, y traduce complejas instrucciones del núcleo \ac{CM3}  en bits que son enviados a través del enlace radio.  Para el protocolo TI 15.4-Stack, el \ac{CM0} implementa la capa \ac{PHY} de la pila de protocolos. \\
+
+El \textit{firmware} del núcleo de radio no está destinado a ser usado o modificado por la aplicación del desarrollador.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\textwidth]{graphs/fig-simplelink-block-diagram.jpeg}
+	\caption{Diagrama de bloques de Simplelink\TM CC13x0}
+	\label{fig:diagramaBloquesSimpleLink}
+\end{figure}
+
+\subsubsection*{ARM Cortex M3 (Núcleo del sistema)}
+
+El núcleo \ac{CM3} está diseñado para ejecutar la pila del protocolo inalámbrico desde la capa de enlace hasta la capa de aplicación de usuario. La capa de enlace actúa como interfaz del núcleo de radio cómo un módulo software llamado \textit{RF driver}.
+
+\subsubsection*{Flash, RAM y periféricos}
+
+El CC1350 contiene en el sistema 128KB de memoria flash programable, 20KB de SRAM, y un amplio rango de periféricos. La memora flash se divide en partes que se pueden borrar de 4KB. El CC1350 también contiene 8kB de caché SRAM que puede ser utilizada para extender la capacidad de la RAM o puede funcionar como una caché normal para incrementar el rendimiento de la aplicación. Otros periféricos incluidos son UART, I2C, I2S, AES, TRNG, temperatura y monitor de la batería.
+
+
+
+\subsection*{TI-RTOS}
+
+TI-RTOS es un entorno operativo para proyectos TI 15.4-Stack en dispositivos CC1350. El kernel TI-RTOS es una versión adaptada del kernel SYS/BIOS y funciona como un sistema operativo con controladores en tiempo real, con prioridades, multitarea y herramientas para la sincronización y planificación.
+
+% TODO Completar esta sección
+
+\subsection*{Arquitectura de la aplicación}
+
+En la figura \ref{fig:fig-example-application-block-diagram} se muestra el diagrama de bloques de la aplicación del nodo.  
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.8\textwidth]{graphs/fig-example-application-block-diagram}
+	\caption{Diagrama de bloques de la aplicación}
+	\label{fig:fig-example-application-block-diagram}
+\end{figure}
+
+
+\begin{description}
+	\item[Aplicación:] Este bloque contiene la lógica específica de la aplicación a desarrollar.
+	\item[Controlador de lógica de enlace:] Implementa varias funciones específicas del IEEE 802.15.4 o Wi-SUN (para una configuración \textit{frequency-hopping}) para formación, conexión y reconexión de la red. 
+	\item[Inicio de TI-RTOS:] Inicializa la aplicación.
+	\item[Funciones útiles] Provee varias utilidades para usar LCD, temporizadores, botones y más.
+	\item[Funciones específicas:] Implementa funciones como guardado de datos, y provee una interfaz para gestionar pulsaciones botones o mostrar información esencial en un LCD.
+	\item[TI 15.4-Stack API (API MAC Module):] Este módulo proporciona una interfaz para gestión y los servicios de datos del 802.15.4 stack mediante el módulo \ac{ICall}.
+\end{description}
+
+\subsection*{Función de inicio}
+
+La función \textit{main()} dentro del archivo \textit{main.c} es el punto de inicio de la ejecución de la aplicación. En este punto los componentes relaciones con la placa son inicializados. Las tareas se configuran en eta función, inicializando los parámetros necesarios como su prioridad y su tamaño en la pila. En el paso final, las interrupciones se habilitan y el planificador \textit{SYS/BIOS} se inicia llamando a \textit{BIOS\_start()}.
+
+
+\subsection*{Arquitectura general de la aplicación}
+
+Esta sección describe como la tarea de la aplicación esta estructura en más detalle. 
+
+\subsubsection*{Función de inicio de la aplicación}
+
+\begin{wrapfigure}{r}{0.4\textwidth}
+	\begin{center}
+		\includegraphics[width=0.4\textwidth]{graphs/TaskFxn.png}
+	\end{center}
+	\caption{Diagrama de estados de la función de inicio}
+\end{wrapfigure}
+
+Después de que la tarea sea construida y el planificador \textit{SYS/BIOS} se inicie, la función que se le pasa durante la construcción de la tarea es ejecutada cuando la tarea está lista.\\
+
+Las funciones de gestión de la energía son inicializadas aquí y el módulo \ac{ICall} se inicia con la función \textit{ICall\_init()}. La dirección IEEE address (programada por TI) es obtenida desde la memoria flash. La tarea de la aplicación (Aplicación Sensor) es inicializada y ejecutada.
+
+\textit{Sensor\_init()} establece varios parámetros de configuración, así como:
+
+\begin{itemize}
+	\item Inicializa las estructuras para los datos
+	\item Inicializa el TI 15.4-Stack
+	\item Configura la seguridad y el \textit{Logical Link Controller}
+	\item Registra las funciones de retorno MAC
+\end{itemize} 
+
+\subsection*{Tarea principal}
+
+Después de la función de inicialización, la tarea entra en un bucle infinito ejecutando siempre las mismas tareas,  se puede ver en la figura
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.8\textwidth]{graphs/fig-sensor-task-flow-chart}
+	\caption{Flujo de la aplicación}
+	\label{fig:fig-sensor-task-flow-chart}
+\end{figure}
+
+
+\subsection*{Web física}
+
+La librería \ac{uBle} permite a la aplicación enviar un paquete en modo \textit{broadcast} a todos los usuarios que estén en el radio de acción del dispositivo. Este paquete de datos es el que utilizamos para notificar a los usuarios con la información de la web física.\\
+
+Los paquetes bluetooth usan la trama \textit{Eddystone-URL}, estas forman parte del núcleo de la web física. Una vez el usuario la decodifica la trama podrá acceder a la URL si tiene conexión a internet.\\
+
+\subsubsection*{Especificaciones  de la trama}
+
+\begin{table}
+	\centering
+	\begin{tabular}{|c|c|c|}
+		\hline 
+		Byte offset & Campo & Descripción \\ 
+		\hline 
+		0 & Tipo de trama & valor = 0x10 \\ 
+		\hline 
+		1 & Potencia TX & Potencia de TX calibrara a 0 m \\ 
+		\hline 
+		2 & Prefijo de la URL & Prefijo de la web \\ 
+		\hline 
+		3+ & URL codificada & Longitud de 1-17 bytes \\ 
+		\hline 
+	\end{tabular} 
+	\caption{Formato de la trama \textit{Eddystone-URL}}
+	\label{tab:formatoEddystone}
+\end{table}
+
+\begin{description}
+	\item[Potencia TX] La potencia de transmisión es la potencia recibida a 0 metros, en dBm, en el rango de valores  de -100 dBm a +20dBm con una resolución de 1 dBm.
+	\item[Prefijo de la URL] El prefijo de la url define la expansión utilizada por la url, por ejemplo ``http://www.'' o ``https://'' son codificadas por los bytes 0x00 o 0x03 respectivamente.
+	\item[Sufijo de la URL] El esquema de URL HTTP está definia por RFC 1738, por ejemplo ``https://goo.gl/S6zT6P'', y es usada para designar recursos accesibles usando HTTP.
+\end{description}
+
+\subsection*{Mensajes OTA}
+
+Los posibles mensajes entre el concentrador y el nodo, están definidos en el archivo \textit{smsgs.h} (Apéndice \ref{apd:estructurasMensajes}) .\\
+
+
+Ambos, Nodo y Concentrador tienen que tener definidos las mismas estructuras de mensajes para una correcta comunicación.
+
+

@@ -1,0 +1,96 @@
+\subsection*{Introducción}
+
+En este capítulo se describe la arquitectura y funcionamiento del concentrador (nodo central). Para este desarrollo se ha utilizado el proyecto de ejemplo que proporciona el fabricante llamado \textit{TI 15.4-Stack Linux Gateway}. \\
+
+La aplicación del concentrador en Linux proporciona la funcionalidad de concentrador de la red, añadiendo una interfaz como servidor socket para comunicarse con la aplicación \textit{Gateway}. Las aplicaciones del Concentrador y \textit{Gateway} establecen un puente entre el protocolo IEEE 802.15.4 con el protocolo IP siendo una gran punto de comienzo para el \ac{IOT}.
+
+\subsection*{Diagrama de bloques y modelo de la interfaz}
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.8\textwidth]{graphs/concentradorBlockDiagram.png}
+	\caption{Arquitectura de software a alto nivel de las aplicaciones TI 15.4-Stack 2.1.0 Linux\R}
+	\label{fig:concentradorBlockDiagram}
+\end{figure}
+
+Esta sección describe la arquitectura de alto nivel basada en coprocesador, los componentes software, y  la arquitectura general del sistema (veáse figura \ref{fig:concentradorBlockDiagram}). El coprocesador es una entidad que implementa el estándar MAC IEEE 802.15.4e/g en un chip dedicado y provee una interfaz serie por la que un procesador externo controla y procesa las operaciones del coprocesador. \\
+
+El concentrador se centra en una arquitectura escalable con una división perfecta donde el procesador ejecuta las capas sobre el IEEE 802.15.4e/g MAC/PHY.\\
+
+En esta aplicación, el programa se ejecuta en una plataforma basada en Linux. Aunque los componentes de alto nivel , pueden ser conceptualmente aplicados a otras plataformas no basadas en Linux. Los componentes desarrollados serán descritos más adelante.\\
+
+La interfaz entre el procesador y el coprocesador están definidas como capas lógicas que están separadas en esta arquitectura: una capa física (por ejemplo, USB o UART), una capa lógica de enlace, y la capa de presentación.\\
+
+Componentes software:
+
+\begin{description}
+	\item[Aplicación del coprocesador: ] Es el programa ejecutandose en el dispositivo CC1350. Esta aplicación implementa una capa 802.15.4e/g MAC/PHY y proporciona una comunicación serie.
+	\item[Kernel Linux]: El kernel Linux provee los controladores para la interfaz serie que está disponible en un puerto físico (por ejemplo, USB).
+	\item[Aplicación TI 15.4-Stack: ] Este módulo implementa la aplicación usando el protocolo 802.15.4e/g y la estructura del modelo \ac{MT}.
+\end{description}
+
+\subsection*{Descripción del SDK}
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[width=0.5\textwidth]{graphs/fig-oob-dir}
+	\end{center}
+	\caption{Estructura del directorio TI 15.4-Stack 2.1.0 Linux\R }
+	\label{fig:fig-oob-dir}
+\end{figure}
+
+La figura \ref{fig:fig-oob-dir} muestra la estructura del directorio de instalación del TI 15.4-Stack 2.1.0. A continuación se explica una descripción de alto nivel de cada carpeta:
+
+\begin{description}
+	\item[components: ] Contiene las siguientes librerías:
+	\begin{description}
+		\item[common: ] Rutinas para características del sistema operativo, como lectura y escritura de ficheros.
+		\item[nv: ]  Simula una memoria no volátil, como la usada en sistemas empotrados.
+		\item[api: ] Interfaz de mensajes API MAC y MT
+	\end{description}
+	\item[docs: ] Documentos como la guía de desarrollo y la guía de comandos MAC para el coprocesador.
+	\item[example: ] Aplicación de ejemplo
+	\begin{description}
+		\item[cc13xx-sbl: ] Herramientas para la actualización para los dispositivos CC13x0.
+		\item[collector: ]  Aplicación de ejemplo que demuestra como iniciar una red, permitir la conexión de dispositivos y recoger datos desde dispositivos remotos.
+		\item[gateway: ] Una aplicación basada en Node.js\TM que crea un servidor local y muestra la información de la red y los datos de los nodos.
+		\item[npi\_server2: ] Interfaz socket para comunicarse con el coprocesador.
+		\item[google: ] Contiene un makefile para descargar e instalar el compilador de \textit{Google protocol buffer}.
+	\end{description}
+	\item[firmware] Precompilados ficheros .hex para el coprocesador.
+	\item[prebuilt] Compilación para ejecutar la aplicación de ejemplo en una BeagleBone Black.
+	\item[scripts] Contiene fragmentos de ficheros makefile usados para compilar la aplicación de ejemplo.
+\end{description}
+
+\subsection*{Funcionamiento}
+
+El proyecto comienza en la función \textit{main()}  en el fichero \textit{linux\_main.c}, donde se inicializan las diferentes interfaces, se lee el fichero de configuración y ejecuta la función \textit{App\_main()} del fichero \textit{appsrv.c}.\\
+
+La función \textit{App\_main()} se encarga de inicializar los dos hilos de ejecución principales que tiene el programa, \textit{client-thread} y \textit{collector-thread}. La tarea del cliente se encarga de conectarse al servidor y procesar la transmisión y recepción de datos por ese canal. Por otro lado la tarea del concentrador, se encarga de generar la red TI 15.4-Stack y procesar los mensajes enviados por este protocolo. \\
+
+\subsubsection*{Hilo del cliente web}
+Este hilo mantiene la comunicación con el servidor, y espera recibir un mensaje de este. Cuando un mensaje es recibido la función \textit{appsrv\_handle\_appClient\_request()} es la encargada de procesar el mensaje y notificar a la red TI 15.4-Stack a través del hilo del concentrador.
+
+\subsection*{Hilo del concentrador}
+
+La función \textit{Collector\_process()} del fichero \textit{collector.c} contiene la lógica de esta tarea, que se describe en la figura ??.
+
+% TODO Incluir figura
+
+\subsection*{Protocol Buffers}
+
+Para facilitar el envío de datos entre el concentrador y el servidor, se ha utilizado \textit{Protocol Buffers}.\\
+
+\textit{Protocol Buffers} es un mecanismo flexible, eficiente y automatizado para estructurar datos estructurados. Solo es necesario indicar como se estructuran los datos y al compilarse generan la implementación en multiples lenguajes de programación de los mecanismo para codificar y descodificar datos. \\
+
+\subsection*{Funcionamiento}
+
+La estructura de los datos a codificar se definen en archivos .proto. Cada mensaje es una pequeña estructura que contiene una serie de parejas clave-valor. (Apéndice \ref{apd:estructurasMensajes} )
+
+Como se observa en el listado \ref{lst:protofield}, el formato de los mensajes es simple y similar a la definición de variables en código C. Una vez definidos los mensajes, se ejecuta el compilador de \textit{Protocol Buffers} para el lenguaje de tu aplicación, en nuestro caso C.\\
+
+\lstinputlisting[caption=Ejemplo de estructura con Protocol Buffers,label=lst:protofield,linewidth=\textwidth,breaklines=true,language=C++]{code/Smsgs_msgStatsField.proto}
+
+
+Las estructuras de datos para nuestra aplicación se pueden observar en el Apéndice \ref{apd:estructurasMensajes}. En este podemos observa que hemos creado un fichero con las mismas estructuras a smsgs.h para poder convertir los mensajes que nos llegan de los nodos en mensajes  \textit{Protocol Buffers} y así poder enviarlos al servidor.
+
+
+

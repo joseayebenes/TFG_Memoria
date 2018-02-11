@@ -1,0 +1,100 @@
+
+\subsection*{Introducción}
+
+El TI 15.4-Stack es una plataforma completa libre de derechos de autor para desarrollar aplicaciones que requieren una solución inalámbrica con topología en estrella, un extremado bajo consumo, largo alcance, fiable, robusto y seguro.\\
+
+Este capítulo explica en detalle los diferentes modos de configuración de la red soportadas por el TI 15.4-Stack.
+
+\subsection*{Elección de arquitectura}
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.8\textwidth]{graphs/fig-device-configuration}
+	\caption{Configuración como dispostivo único y como coprocesador}
+	\label{fig:fig-device-configuration}
+\end{figure}
+
+TI 15.4-Stack se puede utilizar con diferentes arquitecturas como las que se pueden observar en la figura \ref{fig:fig-device-configuration}: \cite{ti154stack}\\
+
+\begin{itemize}
+	\item Una configuración como dispositivo único la podemos observar en la figura \ref{fig:fig-device-configuration} (izquierda). La aplicación y el protocolo son implementados en el CC13X0 como una solución \textit{single-chip}. Esta configuración es la más simple y común cuando se usa el CC13X0 para nodos de la red. Esta configuración es la arquitectura más económica y  de menor consumo.
+	
+	\item Una arquitectura como coprocesador se observa en la figura \ref{fig:fig-device-configuration} (derecha). La pila de protocolos se ejecuta en el CC1350 mientras la aplicación es ejecuta en un \ac{MPU} o \ac{MCU}. La aplicación se comunica con el CC1350 usando el \ac{NPI} sobre una comunicación serie \ac{UART}. Esta configuración es usada en aplicaciones que añadan comunicación inalámbrica de rango alcance o en un ordenador sin los requerimientos para implementar los complejos protocolos asociados a una red inalámbrica.
+\end{itemize}
+
+Para el desarrollo de este \ac{TFG} se utilizarán ambas arquitecturas, usando la arquitectura de dispositivo único para los nodos y la basada en coprocesador para el nodo central o concentrador.
+
+\subsection*{Banda de frecuencias y tasa de transmisión}
+
+La elección de una banda y una tasa de transmisión puede elegirse configurando el apropiado atributo (PHY ID). Las opciones son explicadas en la tabla \ref{tab:bandasFrecuencia}.
+
+\begin{table}[h]
+	\centering
+	\begin{tabular}{ c c c c c }
+		\textbf{PHY ID} & \textbf{Tasa de datos} & \textbf{Frecuencia canal 0} & \textbf{Nº canales} & \textbf{Espacio canales} \\ 
+		\hline 
+		0 	& 250 kbps 	& 2405 MHz & 16 & 5 MHz \\  
+		1 	& 50 kbps 	& 902.2 MHz & 129 & 200 kHz \\ 
+		30 	& 50 kbps 	& 863.125 MHz & 34 & 200 kHz \\ 
+		128 & 50 kbps	& 403.3 MHz & 7 & 200 kHz \\ 
+		129 & 5 kbps 	& 902.2 MHz & 129 & 200 kHz \\ 
+		130	& 5 kbps 	& 403.3 MHz & 7 & 200 kHz \\  
+		131	& 5 kbps 	& 863.125 MHz & 34 & 200 kHz \\  
+		132	& 200 kbps 	& 902.4 MHz & 64 & 400 kHz \\ 
+		133 & 200 kbps 	& 863.225 MHz & 17 & 400 kHz \\ 
+	\end{tabular} 
+	\caption{Bandas permitidas en TI 15.4-Stack y las frecuencias de sus canales}
+	\label{tab:bandasFrecuencia}
+\end{table}
+
+En el \ac{TFG} se han utilizado las frecuencias de 2.4GHz y 868MHz por ser bandas de uso libre en España.  Usando la banda de 868Mhz para la comunicación de largo alcanzo y la de 2.4GHz para enviar los mensajes de la web física.
+
+\subsection*{Indirect Call Framework}
+ICall es un módulo que provee un mecanismo para que la aplicación se comunique con los servicios del TI 15.4-Stack, así como con ciertos servicios primitivos proporcionados por el \ac{RTOS}. \ac{ICall} permite que la aplicación y la pila del protocolo operen eficientemente, comunicandose y compartiendo recursos en un entorno unificado \ac{RTOS}.\\
+
+El componente central de la arquitectura \ac{ICall} es el \textit{dispatcher}, que facilita la comunicación entre la aplicación y las tareas del TI 15.4-Stack.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.4\textwidth]{graphs/fig-icall-block-diagram}
+	\caption{Aplicación ICall - Abstracción del protocolo}
+	\label{fig:fig-icall-block-diagra}
+\end{figure}
+
+La figura \ref{fig:fig-icall-messaging-example} muestra un ejemplo de como un comando se envía desde la aplicación hasta el TI 15.4-Stack, con su correspondiente respuesta.\\
+
+\textit{ICall\_init()} inicializa la instancia del módulo \ac{ICall} y la llamada \textit{ICall\_createRemotetasks()} crea una tarea, con una función de entrada en una dirección conocida. Después de inicializar el \ac{ICall}, la tarea de la aplicación se registra con el módulo \ac{ICall} usando \textit{ICall\_registerApp()}. Durante la ejecución de la tarea de la aplicación, esta envía un comando del protocolo como por ejemplo \textit{ApiMac\_mlmeSetreqArray()}. El comando no se ejecuta en el hilo de la aplicación, en lugar, el comando es encapsulado en un mensaje \ac{ICall} y es dirigido a la tarea del TI 15.4-Stack a través del módulo \ac{ICall}. Mientras la aplicación espera al correspondiente mensaje. Cuando el TI 15.4-Stack finaliza la ejecución del comando, la respuesta es envíada a través del módulo \ac{ICall} a la aplicación.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{graphs/fig-icall-messaging-example}
+	\caption{Ejemplo de comunicación usando el módulo ICALL}
+	\label{fig:fig-icall-messaging-example}
+\end{figure}
+
+\subsection*{uBle}
+
+\ac{uBle} es una variante del paquete BLE-Stack para los dispositivos con conectividad Sub1-GHz y 2.4GHz, como el CC1350. Este paquete permite a las aplicaciones ser encontradas, escanear o actuar como monitor de conexión. El paquete uBle utiliza el \textit{MultiMode RF Driver}. El \textit{MultiMode RF Driver} permite a las aplicaciones usar ambos modos donde otro protocolo de comunicación es integrado junto al uBle.
+
+\subsubsection*{Restricciones y requisitos}
+
+El Micro BLE Stack tiene las siguientes restricciones y requisitos:
+\begin{itemize}
+	\item Las opciones de diseño dependen de una parcial integración de \ac{ICall} para guardar  recursos del sistema. En el caso de uso del módulo \ac{ICall}, se tiene que utilizar el sistema de gestión de pila del módulo \ac{ICall}.
+	\item No puede haber interacción humana-computador porque no existe separación entre el controlador y el host.
+	\item Las opciones de privacidad no son soportadas.
+	\item Para minimizar el consumo de memoria y eliminar redundantes cambios de contexto el uBle no utiliza diferentes tareas en TI-RTOS.
+	\item Solo configuraciones utilizando el \textit{MultiMode RF Driver} pueden ser usada con otros protocolos RF. 
+\end{itemize} 
+
+\subsection*{Modos de operación}
+\subsubsection*{Modo Beacon}
+Las especificaciones IEEE 802.15.4 definen un modo de operación \textit{beacon-enabled} donde el dispositivo coordinador de la  \ac{PAN}  transmite \textit{beacons} para indicar su presencia y permite que otros dispositivos encuentren la \ac{PAN} y se sincronicen. Los \textit{beacons} proporcionan información sobre las especificaciones de la super-trama, que ayuda a los dispositivos con la intención de unirse a la red a sincronizarse y conocer los parámetros de la red antes de comenzar el proceso de unión. La super-trama está dividida en periodos activo e inactivos. Durante el perido activo, los dispositivos se comunican usando el procedimiento \ac{CSMA/CA} excepto en la banda de 863MHz donde se usa el procedimiento \ac{LBT} para el acceso al canal. Los periodo inactivos permiten a los dispositivos en la red conservar energía.
+
+\subsubsection*{Modo Non\-Beacon}
+
+Las especificaciones IEEE 802.15.4 definen un modo de operación \textit{non-beacon} donde el coordinador de la red no envía \textit{beacons} periódicos. El modo \textit{non-beacon}  es un modo de operación asíncrono donde los dispositivos se comunican usando el mecanismo \ac{CSMA/CA}.
+
+\subsubsection*{Modo Frequency\-Hopping}
+
+Las aplicaciones que son desarrolladas usando el TI 15.4-Stack pueden ser configuradas para operar en redes con saltos de frecuencia donde los dispositivos de la red cambian de frecuencia. Este modo de funcionamiento está basado en el modo \ac{DFE} de las especificaciones de Wi-SUN FAN.\\
+
