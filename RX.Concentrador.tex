@@ -29,13 +29,7 @@ Componentes software:
 \end{description}
 
 \subsection*{Descripción del SDK}
-\begin{figure}[h]
-	\begin{center}
-		\includegraphics[width=0.5\textwidth]{graphs/fig-oob-dir}
-	\end{center}
-	\caption{Estructura del directorio TI 15.4-Stack 2.1.0 Linux\R }
-	\label{fig:fig-oob-dir}
-\end{figure}
+
 
 La figura \ref{fig:fig-oob-dir} muestra la estructura del directorio de instalación del TI 15.4-Stack 2.1.0. A continuación se explica una descripción de alto nivel de cada carpeta:
 
@@ -61,6 +55,13 @@ La figura \ref{fig:fig-oob-dir} muestra la estructura del directorio de instalac
 \end{description}
 
 \subsection*{Funcionamiento}
+\begin{wrapfigure}{L}{0.3\textwidth}
+	\begin{center}
+		\includegraphics[width=0.2\textwidth]{graphs/fig-oob-dir}
+	\end{center}
+	\caption{Estructura del directorio TI 15.4-Stack 2.1.0 Linux\R}
+	\label{fig:fig-oob-dir}
+\end{wrapfigure}
 
 El proyecto comienza en la función \textit{main()}  en el fichero \textit{linux\_main.c}, donde se inicializan las diferentes interfaces, se lee el fichero de configuración y ejecuta la función \textit{App\_main()} del fichero \textit{appsrv.c}.\\
 
@@ -71,9 +72,16 @@ Este hilo mantiene la comunicación con el servidor, y espera recibir un mensaje 
 
 \subsection*{Hilo del concentrador}
 
-La función \textit{Collector\_process()} del fichero \textit{collector.c} contiene la lógica de esta tarea, que se describe en la figura ??.
+La función \textit{Collector\_process()} del fichero \textit{collector.c} contiene la lógica de este hilo. En la figura \ref{fig:fig-collector-task-flow-chart} se observa el diagrama de flujo de ejecución del hilo del concentrador, este hilo comienza inicializando las estructuras de datos y los distintos controladores de la red y pasa a un bucle infinito donde ejecuta una y otra vez las mismas tareas.\\
 
-% TODO Incluir figura
+En el bucle se revisan los eventos para la inicialización de la red, el envío de mensajes de rastreo o de configuración. Además se procesan los mensajes de la capa de enlace, los eventos de la aplicación y finalmente los eventos de la Api MAC.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{graphs/fig-collector-task-flow-chart}
+	\caption{Flujo del hilo principal del concentrador}
+	\label{fig:fig-collector-task-flow-chart}
+\end{figure}
 
 \subsection*{Protocol Buffers}
 
@@ -81,13 +89,13 @@ Para facilitar el envío de datos entre el concentrador y el servidor, se ha util
 
 \textit{Protocol Buffers} es un mecanismo flexible, eficiente y automatizado para estructurar datos estructurados. Solo es necesario indicar como se estructuran los datos y al compilarse generan la implementación en multiples lenguajes de programación de los mecanismo para codificar y descodificar datos. \\
 
-\subsection*{Funcionamiento}
+\subsubsection*{Funcionamiento}
 
 La estructura de los datos a codificar se definen en archivos .proto. Cada mensaje es una pequeña estructura que contiene una serie de parejas clave-valor. (Apéndice \ref{apd:estructurasMensajes} )
 
 Como se observa en el listado \ref{lst:protofield}, el formato de los mensajes es simple y similar a la definición de variables en código C. Una vez definidos los mensajes, se ejecuta el compilador de \textit{Protocol Buffers} para el lenguaje de tu aplicación, en nuestro caso C.\\
 
-\lstinputlisting[caption=Ejemplo de estructura con Protocol Buffers,label=lst:protofield,linewidth=\textwidth,breaklines=true,language=C++]{code/Smsgs_msgStatsField.proto}
+\lstinputlisting[frame=single,caption=Ejemplo de estructura con Protocol Buffers,label=lst:protofield,linewidth=\textwidth,breaklines=true,language=C++]{code/Smsgs_msgStatsField.proto}
 
 
 Las estructuras de datos para nuestra aplicación se pueden observar en el Apéndice \ref{apd:estructurasMensajes}. En este podemos observa que hemos creado un fichero con las mismas estructuras a smsgs.h para poder convertir los mensajes que nos llegan de los nodos en mensajes  \textit{Protocol Buffers} y así poder enviarlos al servidor.

@@ -1,7 +1,35 @@
 \chapterbegin{Prueba en entorno real}
 \label{chp:entornoReal}
 \minitoc
+\sectionx{Introducción}
 
-\sectionx{Localización}
+Esta prueba consiste en simular el funcionamiento de la red en un entorno lo más parecido a lo que se enfrentaría. Para ello se ha instalado el concentrador en un punto fijo como se observa en la figura \ref{fig:pruebaLocalizacion} (marcador central del círculo) y el nodo se ha ido cambiando de posición. Con esta prueba se ha comprobado el alcance de la red, el envío de los mensajes de la web física por Bluetooth y las reconexiones de los nodos a la red.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.7\textwidth]{graphs/pruebaLocalizacion}
+	\caption{Posición del concentrador y nodo durante la prueba en el punto de máximo alcance}
+	\label{fig:pruebaLocalizacion}
+\end{figure}
+
+\sectionx{Metodología}
+
+Cómo se ha indicado anteriormente, el concentrador se ha ubicado en un punto fijo que estuviera elevado, por ello se ha situado en el balcón de la 2º planta de un edificio. Y el nodo se ha ido cambiado de posición hasta llegar a la distancia máxima y que este perdiera la conexión con el concentrador, después de esto se ha vuelto a acercar para comprobar la reconexión a la red.
+
+\sectionx{Resultados}
+
+Después de realizar las pruebas se ha estimado la distancia máxima a la que el nodo puede situarse para poder mantener la conexión que es de 400m, pero esta medida mejoraría cambiando la antena y utilizando un amplificador en transmisión lo que quedará como una línea futura de mejora de este proyecto.\\
+
+En cuanto a la reconexión del nodo, ha sido todo un éxito. Después de repetir la desconexión y reconexión del nodo varías veces en todas de ellas la ha realizado sin problemas. Y además no ha dejado de enviar los mensajes de la web física en ningún momento durante la prueba.\\
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.8\textwidth]{graphs/pruebaEstadisticas}
+	\caption{Estadísticas de la red después de la prueba}
+	\label{fig:pruebaEstadisticas}
+\end{figure}
+Finalmente en la figura \ref{fig:pruebaEstadisticas} se observan las estadísticas que ha recogido la red después de las pruebas,  donde se tiene que el concentrador ha recibido 26 peticiones del nodo para que le envíe la configuración (esta petición se realiza después de una conexión o reconexión)  y 222 mensajes de tipo "Sensor" que son los que el nodo envía periódicamente con datos de temperatura, batería, estadísticas y algunos parámetros más.
+
+
+
 
 \chapterend{}

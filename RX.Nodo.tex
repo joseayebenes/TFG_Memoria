@@ -3,7 +3,7 @@
 
 \subsection*{Introducción}
 
-La aplicación implementa el dispositivo de la red, que le permite conectarse a la red creada por el concentrador. El sensor periódicamente envía reportes de datos en intervalos configurados por el concentrador y este responde con mensajes de rastreo.
+El nodo implementa la aplicación que le permite conectarse a la red creada por el concentrador. El sensor periódicamente envía reportes de datos en intervalos configurados por el concentrador y este responde con mensajes de rastreo.
 
 \subsection*{Arquitectura Hardware}
 
@@ -60,23 +60,17 @@ En la figura \ref{fig:fig-example-application-block-diagram} se muestra el diagr
 
 La función \textit{main()} dentro del archivo \textit{main.c} es el punto de inicio de la ejecución de la aplicación. En este punto los componentes relaciones con la placa son inicializados. Las tareas se configuran en eta función, inicializando los parámetros necesarios como su prioridad y su tamaño en la pila. En el paso final, las interrupciones se habilitan y el planificador \textit{SYS/BIOS} se inicia llamando a \textit{BIOS\_start()}.
 
+\subsection*{Tarea principal}
 
-\subsection*{Arquitectura general de la aplicación}
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.8\textwidth]{graphs/fig-sensor-task-flow-chart}
+	\caption{Flujo de la tarea principal}
+	\label{fig:fig-sensor-task-flow-chart}
+\end{figure}
 
-Esta sección describe como la tarea de la aplicación esta estructura en más detalle. 
 
-\subsubsection*{Función de inicio de la aplicación}
-
-\begin{wrapfigure}{r}{0.4\textwidth}
-	\begin{center}
-		\includegraphics[width=0.4\textwidth]{graphs/TaskFxn.png}
-	\end{center}
-	\caption{Diagrama de estados de la función de inicio}
-\end{wrapfigure}
-
-Después de que la tarea sea construida y el planificador \textit{SYS/BIOS} se inicie, la función que se le pasa durante la construcción de la tarea es ejecutada cuando la tarea está lista.\\
-
-Las funciones de gestión de la energía son inicializadas aquí y el módulo \ac{ICall} se inicia con la función \textit{ICall\_init()}. La dirección IEEE address (programada por TI) es obtenida desde la memoria flash. La tarea de la aplicación (Aplicación Sensor) es inicializada y ejecutada.
+Después de que la tarea sea construida y el planificador \textit{SYS/BIOS} se inicie, la función que se le pasa durante la construcción de la tarea es ejecutada cuando la tarea está lista. En esta función se inicializan las funciones de gestión de la energía y el módulo \ac{ICall} se inicia con la función \textit{ICall\_init()}. La dirección IEEE address (programada por TI) es obtenida desde la memoria flash. La tarea de la aplicación (Aplicación Sensor) es inicializada y ejecutada.\\
 
 \textit{Sensor\_init()} establece varios parámetros de configuración, así como:
 
@@ -87,16 +81,15 @@ Las funciones de gestión de la energía son inicializadas aquí y el módulo \ac{IC
 	\item Registra las funciones de retorno MAC
 \end{itemize} 
 
-\subsection*{Tarea principal}
+Como se observa en la figura \ref{fig:fig-sensor-task-flow-chart} después de ejecutar la función \textit{Sensor\_init()} la tarea entra en un bucle donde se realizan los mismos procedimientos:
 
-Después de la función de inicialización, la tarea entra en un bucle infinito ejecutando siempre las mismas tareas,  se puede ver en la figura
-
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=0.8\textwidth]{graphs/fig-sensor-task-flow-chart}
-	\caption{Flujo de la aplicación}
-	\label{fig:fig-sensor-task-flow-chart}
-\end{figure}
+\begin{enumerate}
+	\item Conectar o reconectar el nodo a la red.
+	\item Enviar el mensaje periódico con los datos de sensores.
+	\item Procesar los eventos LLC que gestionan la capa de enlace.
+	\item Procesar los eventos específicos del sensor y enviar los mensajes de la web física en los intervalos definidos.
+	\item Procesar los eventos de la pila ApiMac.
+\end{enumerate}
 
 
 \subsection*{Web física}
@@ -107,7 +100,7 @@ Los paquetes bluetooth usan la trama \textit{Eddystone-URL}, estas forman parte 
 
 \subsubsection*{Especificaciones  de la trama}
 
-\begin{table}
+\begin{table}[H]
 	\centering
 	\begin{tabular}{|c|c|c|}
 		\hline 
