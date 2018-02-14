@@ -1,10 +1,10 @@
-\subsection*{Introducción}
+\subsection{Introducción}
 
 En este capítulo se describe la arquitectura y funcionamiento del concentrador (nodo central). Para este desarrollo se ha utilizado el proyecto de ejemplo que proporciona el fabricante llamado \textit{TI 15.4-Stack Linux Gateway}. \\
 
-La aplicación del concentrador en Linux proporciona la funcionalidad de concentrador de la red, añadiendo una interfaz como servidor socket para comunicarse con la aplicación \textit{Gateway}. Las aplicaciones del Concentrador y \textit{Gateway} establecen un puente entre el protocolo IEEE 802.15.4 con el protocolo IP siendo una gran punto de comienzo para el \ac{IOT}.
+La aplicación sobre Linux proporciona la funcionalidad de concentrador de la red, añadiendo una interfaz como servidor socket para comunicarse con la aplicación \textit{Gateway}. Las aplicaciones del Concentrador y \textit{Gateway} establecen un puente entre el protocolo IEEE 802.15.4 con el protocolo IP siendo una gran punto de comienzo para el \ac{IOT}.
 
-\subsection*{Diagrama de bloques y modelo de la interfaz}
+\subsection{Diagrama de bloques y modelo de la interfaz}
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=0.8\textwidth]{graphs/concentradorBlockDiagram.png}
@@ -18,17 +18,17 @@ El concentrador se centra en una arquitectura escalable con una división perfect
 
 En esta aplicación, el programa se ejecuta en una plataforma basada en Linux. Aunque los componentes de alto nivel , pueden ser conceptualmente aplicados a otras plataformas no basadas en Linux. Los componentes desarrollados serán descritos más adelante.\\
 
-La interfaz entre el procesador y el coprocesador están definidas como capas lógicas que están separadas en esta arquitectura: una capa física (por ejemplo, USB o UART), una capa lógica de enlace, y la capa de presentación.\\
+La interfaz entre el procesador y el coprocesador están definidas como capas lógicas que están separadas en esta arquitectura: una capa física (por ejemplo, USB o UART), una capa lógica de enlace, y la capa de presentación.
 
 Componentes software:
 
-\begin{description}
-	\item[Aplicación del coprocesador: ] Es el programa ejecutandose en el dispositivo CC1350. Esta aplicación implementa una capa 802.15.4e/g MAC/PHY y proporciona una comunicación serie.
-	\item[Kernel Linux]: El kernel Linux provee los controladores para la interfaz serie que está disponible en un puerto físico (por ejemplo, USB).
-	\item[Aplicación TI 15.4-Stack: ] Este módulo implementa la aplicación usando el protocolo 802.15.4e/g y la estructura del modelo \ac{MT}.
-\end{description}
+\begin{itemize}
+	\item \textbf{Aplicación del coprocesador:} Es el programa ejecutandose en el dispositivo CC1350. Esta aplicación implementa una capa 802.15.4e/g MAC/PHY y proporciona una comunicación serie.
+	\item \textbf{Kernel Linux:} El kernel Linux provee los controladores para la interfaz serie que está disponible en un puerto físico (por ejemplo, USB).
+	\item \textbf{Aplicación TI 15.4-Stack:} Este módulo implementa la aplicación usando el protocolo 802.15.4e/g y la estructura del modelo \ac{MT}.
+\end{itemize}
 
-\subsection*{Descripción del SDK}
+\subsection{Descripción del SDK}
 
 
 La figura \ref{fig:fig-oob-dir} muestra la estructura del directorio de instalación del TI 15.4-Stack 2.1.0. A continuación se explica una descripción de alto nivel de cada carpeta:
@@ -54,23 +54,22 @@ La figura \ref{fig:fig-oob-dir} muestra la estructura del directorio de instalac
 	\item[scripts] Contiene fragmentos de ficheros makefile usados para compilar la aplicación de ejemplo.
 \end{description}
 
-\subsection*{Funcionamiento}
-\begin{wrapfigure}{L}{0.3\textwidth}
-	\begin{center}
-		\includegraphics[width=0.2\textwidth]{graphs/fig-oob-dir}
-	\end{center}
+\subsection{Funcionamiento}
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.2\textwidth]{graphs/fig-oob-dir}
 	\caption{Estructura del directorio TI 15.4-Stack 2.1.0 Linux\R}
 	\label{fig:fig-oob-dir}
-\end{wrapfigure}
+\end{figure}
 
 El proyecto comienza en la función \textit{main()}  en el fichero \textit{linux\_main.c}, donde se inicializan las diferentes interfaces, se lee el fichero de configuración y ejecuta la función \textit{App\_main()} del fichero \textit{appsrv.c}.\\
 
 La función \textit{App\_main()} se encarga de inicializar los dos hilos de ejecución principales que tiene el programa, \textit{client-thread} y \textit{collector-thread}. La tarea del cliente se encarga de conectarse al servidor y procesar la transmisión y recepción de datos por ese canal. Por otro lado la tarea del concentrador, se encarga de generar la red TI 15.4-Stack y procesar los mensajes enviados por este protocolo. \\
 
-\subsubsection*{Hilo del cliente web}
+\subsubsection{Hilo del cliente web}
 Este hilo mantiene la comunicación con el servidor, y espera recibir un mensaje de este. Cuando un mensaje es recibido la función \textit{appsrv\_handle\_appClient\_request()} es la encargada de procesar el mensaje y notificar a la red TI 15.4-Stack a través del hilo del concentrador.
 
-\subsection*{Hilo del concentrador}
+\subsection{Hilo del concentrador}
 
 La función \textit{Collector\_process()} del fichero \textit{collector.c} contiene la lógica de este hilo. En la figura \ref{fig:fig-collector-task-flow-chart} se observa el diagrama de flujo de ejecución del hilo del concentrador, este hilo comienza inicializando las estructuras de datos y los distintos controladores de la red y pasa a un bucle infinito donde ejecuta una y otra vez las mismas tareas.\\
 
@@ -83,13 +82,13 @@ En el bucle se revisan los eventos para la inicialización de la red, el envío de
 	\label{fig:fig-collector-task-flow-chart}
 \end{figure}
 
-\subsection*{Protocol Buffers}
+\subsection{Protocol Buffers}
 
 Para facilitar el envío de datos entre el concentrador y el servidor, se ha utilizado \textit{Protocol Buffers}.\\
 
 \textit{Protocol Buffers} es un mecanismo flexible, eficiente y automatizado para estructurar datos estructurados. Solo es necesario indicar como se estructuran los datos y al compilarse generan la implementación en multiples lenguajes de programación de los mecanismo para codificar y descodificar datos. \\
 
-\subsubsection*{Funcionamiento}
+\subsubsection{Funcionamiento}
 
 La estructura de los datos a codificar se definen en archivos .proto. Cada mensaje es una pequeña estructura que contiene una serie de parejas clave-valor. (Apéndice \ref{apd:estructurasMensajes} )
 

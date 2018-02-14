@@ -1,41 +1,38 @@
 
 
 
-\subsection*{Introducción}
+\subsection{Introducción}
 
 El nodo implementa la aplicación que le permite conectarse a la red creada por el concentrador. El sensor periódicamente envía reportes de datos en intervalos configurados por el concentrador y este responde con mensajes de rastreo.
 
-\subsection*{Arquitectura Hardware}
+\subsection{Arquitectura hardware}
 
-\subsection*{ARM Cortex M0 (Núcleo radio)}
-El núcleo \ac{CM0} en el CC1350 es responsable de la interfaz audio, y traduce complejas instrucciones del núcleo \ac{CM3}  en bits que son enviados a través del enlace radio.  Para el protocolo TI 15.4-Stack, el \ac{CM0} implementa la capa \ac{PHY} de la pila de protocolos. \\
+El nodo está basado en la placa de desarrollo \textit{SimpleLink\TM CC1350 wireless microcontroller (MCU) LaunchPad\TM} que combina una interfaz radio \textit{Bluetooth\R low energy}  y  otra de \textit{Sub-1GHz} en un único chip.\\
 
-El \textit{firmware} del núcleo de radio no está destinado a ser usado o modificado por la aplicación del desarrollador.
-
-\begin{figure}[H]
+En esta sección se describen los distintos módulos que contiene el microcontrolador CC1350.
+\begin{figure}[h]
 	\centering
 	\includegraphics[width=0.5\textwidth]{graphs/fig-simplelink-block-diagram.jpeg}
 	\caption{Diagrama de bloques de Simplelink\TM CC13x0}
 	\label{fig:diagramaBloquesSimpleLink}
 \end{figure}
+\subsubsection{ARM Cortex M0 (Núcleo radio)}
+El núcleo \ac{CM0} en el CC1350 es responsable de la interfaz audio, y traduce complejas instrucciones del núcleo \ac{CM3}  en bits que son enviados a través del enlace radio.  Para el protocolo TI 15.4-Stack, el \ac{CM0} implementa la capa \ac{PHY} de la pila de protocolos. \\
 
-\subsubsection*{ARM Cortex M3 (Núcleo del sistema)}
+El \textit{firmware} del núcleo de radio no está destinado a ser usado o modificado por la aplicación del desarrollador.
+
+
+
+\subsubsection{ARM Cortex M3 (Núcleo del sistema)}
 
 El núcleo \ac{CM3} está diseñado para ejecutar la pila del protocolo inalámbrico desde la capa de enlace hasta la capa de aplicación de usuario. La capa de enlace actúa como interfaz del núcleo de radio cómo un módulo software llamado \textit{RF driver}.
 
-\subsubsection*{Flash, RAM y periféricos}
+\subsubsection{Flash, RAM y periféricos}
 
 El CC1350 contiene en el sistema 128KB de memoria flash programable, 20KB de SRAM, y un amplio rango de periféricos. La memora flash se divide en partes que se pueden borrar de 4KB. El CC1350 también contiene 8kB de caché SRAM que puede ser utilizada para extender la capacidad de la RAM o puede funcionar como una caché normal para incrementar el rendimiento de la aplicación. Otros periféricos incluidos son UART, I2C, I2S, AES, TRNG, temperatura y monitor de la batería.
 
 
-
-\subsection*{TI-RTOS}
-
-TI-RTOS es un entorno operativo para proyectos TI 15.4-Stack en dispositivos CC1350. El kernel TI-RTOS es una versión adaptada del kernel SYS/BIOS y funciona como un sistema operativo con controladores en tiempo real, con prioridades, multitarea y herramientas para la sincronización y planificación.
-
-% TODO Completar esta sección
-
-\subsection*{Arquitectura de la aplicación}
+\subsection{Arquitectura de la aplicación}
 
 En la figura \ref{fig:fig-example-application-block-diagram} se muestra el diagrama de bloques de la aplicación del nodo.  
 
@@ -51,16 +48,23 @@ En la figura \ref{fig:fig-example-application-block-diagram} se muestra el diagr
 	\item[Aplicación:] Este bloque contiene la lógica específica de la aplicación a desarrollar.
 	\item[Controlador de lógica de enlace:] Implementa varias funciones específicas del IEEE 802.15.4 o Wi-SUN (para una configuración \textit{frequency-hopping}) para formación, conexión y reconexión de la red. 
 	\item[Inicio de TI-RTOS:] Inicializa la aplicación.
-	\item[Funciones útiles] Provee varias utilidades para usar LCD, temporizadores, botones y más.
-	\item[Funciones específicas:] Implementa funciones como guardado de datos, y provee una interfaz para gestionar pulsaciones botones o mostrar información esencial en un LCD.
+	\item[Funciones de control HW] Provee varias utilidades para usar LCD, temporizadores, botones y más.
+	\item[Funciones de la aplicación:] Implementa funciones como guardado de datos, y provee una interfaz para gestionar pulsaciones botones o mostrar información esencial en un LCD.
 	\item[TI 15.4-Stack API (API MAC Module):] Este módulo proporciona una interfaz para gestión y los servicios de datos del 802.15.4 stack mediante el módulo \ac{ICall}.
 \end{description}
 
-\subsection*{Función de inicio}
+\subsection{TI-RTOS}
+
+En este proyecto se ha incluido un \ac{RTOS} que permita la separación en tareas de los distintos procesos. Para facilitar la compatibilidad entre los distintos módulos se ha utilizado el sistema operativo TI-RTOS de Texas Instruments.
+
+TI-RTOS es un entorno operativo para proyectos TI 15.4-Stack en dispositivos CC1350. El kernel TI-RTOS es una versión adaptada del kernel SYS/BIOS y funciona como un sistema operativo con controladores en tiempo real, con prioridades, multitarea y herramientas para la sincronización y planificación.
+
+
+\subsection{Función de inicio}
 
 La función \textit{main()} dentro del archivo \textit{main.c} es el punto de inicio de la ejecución de la aplicación. En este punto los componentes relaciones con la placa son inicializados. Las tareas se configuran en eta función, inicializando los parámetros necesarios como su prioridad y su tamaño en la pila. En el paso final, las interrupciones se habilitan y el planificador \textit{SYS/BIOS} se inicia llamando a \textit{BIOS\_start()}.
 
-\subsection*{Tarea principal}
+\subsection{Tarea principal}
 
 \begin{figure}[h]
 	\centering
@@ -91,14 +95,16 @@ Como se observa en la figura \ref{fig:fig-sensor-task-flow-chart} después de eje
 	\item Procesar los eventos de la pila ApiMac.
 \end{enumerate}
 
+\subsection{Funciones de gestión del Stack}
+\input{RX.stack.tex}
 
-\subsection*{Web física}
+\subsection{Funciones de acceso a la web física}
 
 La librería \ac{uBle} permite a la aplicación enviar un paquete en modo \textit{broadcast} a todos los usuarios que estén en el radio de acción del dispositivo. Este paquete de datos es el que utilizamos para notificar a los usuarios con la información de la web física.\\
 
 Los paquetes bluetooth usan la trama \textit{Eddystone-URL}, estas forman parte del núcleo de la web física. Una vez el usuario la decodifica la trama podrá acceder a la URL si tiene conexión a internet.\\
 
-\subsubsection*{Especificaciones  de la trama}
+\subsubsection{Especificaciones  de la trama}
 
 \begin{table}[H]
 	\centering
@@ -125,11 +131,11 @@ Los paquetes bluetooth usan la trama \textit{Eddystone-URL}, estas forman parte 
 	\item[Sufijo de la URL] El esquema de URL HTTP está definia por RFC 1738, por ejemplo ``https://goo.gl/S6zT6P'', y es usada para designar recursos accesibles usando HTTP.
 \end{description}
 
-\subsection*{Mensajes OTA}
+\subsection{Mensajes OTA}
 
-Los posibles mensajes entre el concentrador y el nodo, están definidos en el archivo \textit{smsgs.h} (Apéndice \ref{apd:estructurasMensajes}) .\\
+Los posibles mensajes entre el concentrador y el nodo, están definidos en el archivo \textit{smsgs.h}. En el Apéndice \ref{apd:estructurasMensajes} se puede encontrar un diagrama con las estructuras de estos mensajes.\\
 
 
-Ambos, Nodo y Concentrador tienen que tener definidos las mismas estructuras de mensajes para una correcta comunicación.
+Ambos, Nodo y Concentrador han de tener definidos las mismas estructuras de mensajes para una correcta comunicación.
 
 

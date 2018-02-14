@@ -2,24 +2,22 @@
 \label{chp:App}
 \minitoc
 
-\sectionx{Introducción}
-\begin{wrapfigure}{L}{0.3\textwidth}
-	\begin{center}
-		\includegraphics[width=0.2\textwidth]{graphs/estructuraServidor.png}
-	\end{center}
-	\caption{Estructura del directorio del servidor}
-	\label{fig:estructuraServidor}
-\end{wrapfigure}
+\section{Introducción}
+
 
 El servidor se puede dividir en dos partes \textit{Front-end} y \textit{Back-End} que son términos que se refieren a la separación entre una capa de presentación y una capa de acceso a datos respectivamente. 
 
-\sectionx{Estructura del servidor}
-
+\section{Estructura del directorio}
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.2\textwidth]{graphs/estructuraServidor.png}
+	\caption{Estructura del directorio del servidor}
+	\label{fig:estructuraServidor}
+\end{figure}
 El servidor está compuesto por el directorio que se observa en la figura \ref{fig:estructuraServidor} y a continuación se describe la función de cada directorio:
 
-
 \begin{description}
-	\item[api: ] en este directorio se encuentran las definiciones de llamadas REST al servidor.
+	\item[api: ] en este directorio se encuentran las definiciones de llamadas \ac{REST} al servidor. Las llamadas \ac{REST} se utilizan para poder acceder a los datos almacenados desde fuera del servidor.
 	\item[appClient: ] Esta carpeta contiene el \textit{Back-end} de la web:
 	\begin{description}
 		\item[devices: ] se definen las funciones relacionadas con la gestión de los nodos.
@@ -40,25 +38,131 @@ El servidor está compuesto por el directorio que se observa en la figura \ref{fi
 	\item[run\_gateway.sh: ] \textit{script} para iniciar el servidor.
 \end{description}
 
-\sectionx{Back-end}
+\section{Inicio del servidor}
 
-El \textit{Back-end} es el área que se dedica a la lógica, en este encontramos una interfaz que se encarga de comunicarse con el concentrador y otra que se encarga de comunicarse con el \textit{Front-end} usando \textit{Web-Sockets}.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\textwidth]{graphs/fig-server-flow-chart}
+	\caption{Diagrama de flujo en el inicio del servidor}
+	\label{fig:fig-server-flow-chart}
+\end{figure}
 
+La función \textit{Gateway()} inicia todo el servidor, en esta se realiza la conexión a la base de datos MongoDB y se crean las funciones \textit{Callbacks} para el intercambio de información entre el \textit{Back-end} y \textit{Front-end} usando \textit{WebSockets}. La figura \ref{fig:fig-server-flow-chart} refleja el proceso de inicio del servidor.
 
-Al inicio del archivo \textit{appClient.js} se abre el puerto 3000 y se mantiene a la escucha hasta que el concentrador se conecta. Cuando el concentrador se conecta, este el envía la información de configuración. \\
+\section{Back-end}
 
-Toda la información de la red se almacena en una base de datos MongoDB\R, también se almacena los datos enviados por los nodos así como sus parámetros de configuración.\\
+El \textit{Back-end} es el área que se dedica a la lógica, en este encontramos una interfaz que se encarga de comunicarse con el concentrador y otra que se encarga de comunicarse con el \textit{Front-end} usando \textit{Web-Sockets}.\\
 
-Una vez la conexión entre el concentrador y el \textit{back-end} se ha establecido, ambos se quedan a la espera de que el usuario desde el \textit{front-end} permita la conexión de los nodos a la red.
+Como se observa en la figura \ref{fig:fig-server-flow-chart}, la función \textit{AppClient()} es la que implementa la creación del servidor en el puerto 3000 para que el concentrador pueda enviar datos al servidor. \\
 
+Cuando la conexión entre el concentrador y el collector está establecida, el \textit{Back-end} queda a la espera de recibir datos del concentrador o del \textit{Front-end}. Todos los datos recibidos del concentrador se almacenan en la base de datos MongoDB para tener un registro de todos los datos de la red que pudieran ser útiles en un futuro y se envían al \textit{Front-end}. \\
+
+\subsection{Mensajes enviados entre el concentrador y el Back-end}
+
+En la tabla \ref{tab:appsrv_cmdid} se pueden observar todos los posibles mensajes enviados entre el concentrador y el \textit{Back-end}. Estos mensajes están definidos en los ficheros .proto tanto en el concentrador y en el \textit{Back-end}.
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{p{0.5\textwidth}|p{0.5\textwidth}}
+		\hline 
+		\textbf{Identificador de mensaje} &	\textbf{Descripción} \\ 
+		\hline 
+		DEVICE\_JOINED\_IND & Indicación de que un nodo se ha conectado  a la red \\ 
+		\hline 
+		DEVICE\_LEFT\_IND & Indicación de que un nodo se ha desconectado de la red \\ 
+		\hline 
+		NWK\_INFO\_IND & Indicación de que está disponible la información de la red \\ 
+		\hline 
+		GET\_NWK\_INFO\_REQ & Petición de información de la red \\ 
+		\hline 
+		GET\_NWK\_INFO\_RSP & Respuesta de información de la red \\ 
+		\hline 
+		GET\_NWK\_INFO\_CNF & Acuse de recibido de GET\_NWK\_ INFO\_RSP \\ 
+		\hline 
+		GET\_DEVICE\_ARRAY\_REQ & Petición de la lista de dispositivos de la red \\ 
+		\hline 
+		GET\_DEVICE\_ARRAY\_CNF & Acuse de recibido de GET\_DEVICE\_ ARRAY\_REQ \\ 
+		\hline 
+		DEVICE\_NOTACTIVE\_UPDATE\_IND & Indicación de que un dispositivo no está activo \\ 
+		\hline 
+		DEVICE\_DATA\_RX\_IND & Indicación de los datos recibidos de un dispositivo \\ 
+		\hline 
+		COLLECTOR\_STATE\_CNG\_IND & Indicación del estado del concentrador \\ 
+		\hline 
+		SET\_JOIN\_PERMIT\_REQ & Petición de permiso de conexión de nuevos dispositivos \\ 
+		\hline 
+		SET\_JOIN\_PERMIT\_CNF & Acuse de recibido de SET\_JOIN\_ PERMIT\_REQ \\ 
+		\hline 
+		TX\_DATA\_REQ & Petición de transmisión de datos \\ 
+		\hline 
+		TX\_DATA\_CNF & Acuse de recibido de TX\_DATA\_REQ \\ 
+		\hline 
+		GET\_COLLECTOR\_STATS\_REQ & Petición de las estadísticas del concentrador \\ 
+		\hline 
+		GET\_COLLECTOR\_STATS\_RSP & Respuesta con las estadísticas del concentrador \\ 
+		\hline 
+	\end{tabular} 
+	\caption{Identificadores de los mensajes enviados entre el concentador y el servidor}
+	\label{tab:appsrv_cmdid}
+\end{table}
+
+\subsection{Mensajes enviados entre el Back-end y Front-end}
+
+Para que se pueda administrar la red y observar todos sus parámetros en el \textit{Front-end} se han creado los mensajes que se observan en la tabla \ref{tab:webSocket} que se envían a través de \textit{WebSockets}.
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{p{0.3\textwidth}|p{0.7\textwidth}}
+		\hline 
+		\textbf{Identificador} & \textbf{Descripción} \\ 
+		\hline 
+		sendConfig & Envío de la petición de configuración \\ 
+		\hline 
+		sendToggle & Envío de conmutación de un led de la placa de un nodo \\ 
+		\hline 
+		sendToggleBLE & Envío de conmutación del estado del BLE de  un nodo \\ 
+		\hline 
+		getDevArrayReq & Obtener la lista de dispositivos \\ 
+		\hline 
+		getNwkInfoReq & Obtener la información de la red \\ 
+		\hline 
+		setJoinPermitReq & Permitir la conexión de nuevos dispositivos \\ 
+		\hline 
+		changeUrl & Cambiar la URL que envía un nodo \\ 
+		\hline 
+		bikeSelectReq & Seleccionar una bicicleta en un nodo de tipo aparcamiento \\ 
+		\hline 
+		collectorStatReq & Obtener las estadísticas del collector \\ 
+		\hline 
+		nodeChangePosition & Cambiar las coordenadas de un nodo \\ 
+		\hline 
+		collChangePosition & Cambiar las coordenadas del concentrador \\ 
+		\hline 
+		permitJoinCnf & Respuesta del mensaje setJoinPermitReq \\ 
+		\hline 
+		connDevInfoUpdate & Actualización de la información de un nodo \\ 
+		\hline 
+		nwkUpdate & Actualización de la información de la red \\ 
+		\hline 
+		getdevArrayRsp & Respuesta del mensaje getDevArrayReq \\ 
+		\hline 
+	\end{tabular} 
+	\caption{Tipos de mensajes enviados por WebSocket entre el Back-end y el Front-end}
+	\label{tab:webSocket}
+\end{table}
 
 \sectionx{Front-end}
 
 El \textit{Front-end} es la interfaz del servidor con el usuario. Para facilitar el control de las vistas se ha utilizado el \textit{framework AngularJS}.\\
 
 Angular es un \textit{framework} \ac{MVC} para la construcción de aplicaciones de una única página del lado del cliente en HTML y JavaScript.\\
-
-Como se ha mencionado anteriormente, el patrón que se usa en Angular es el conocido como Modelo, Vista y Controlador:
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\textwidth]{graphs/fig-mvc}
+	\caption{Diagrama de flujo en el inicio del servidor}
+	\label{fig:fig-mvc}
+\end{figure}
+En la figura \ref{fig:fig-mvc} se representa la interacción entre las diferentes partes de la arquitectura \ac{MVC}:
 
 \begin{description}
 	\item[Vistas: ] Será el código HTML y todo lo que presente los datos o información.
@@ -67,6 +171,8 @@ Como se ha mencionado anteriormente, el patrón que se usa en Angular es el conoc
 \end{description}
 
 
+
+Todas las funcionalidades del \textit{Front-end} se pueden observar en el manual de uso (Apéndice \ref{apd:manual}).
 
 
 \chapterend{}
