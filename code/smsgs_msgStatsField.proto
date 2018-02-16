@@ -1,6 +1,3 @@
-/*!
-  Configuration Request message: sent from controller to the sensor.
-*/
 message Smsgs_configReqMsg
 {
     /*! Command ID - 1 byte */

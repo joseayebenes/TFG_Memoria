@@ -71,19 +71,6 @@ La figura \ref{fig:fig-icall-messaging-example} muestra un ejemplo de como un co
 	\label{fig:fig-icall-messaging-example}
 \end{figure}
 
-\subsubsection{uBle}
-
-\ac{uBle} es una variante del paquete BLE-Stack para los dispositivos con conectividad Sub1-GHz y 2.4GHz, como el CC1350. Este paquete permite a las aplicaciones ser encontradas, escanear o actuar como monitor de conexión. El paquete uBle utiliza el \textit{MultiMode RF Driver}. El \textit{MultiMode RF Driver} permite a las aplicaciones usar ambos modos donde otro protocolo de comunicación es integrado junto al uBle.
-
-El Micro BLE Stack tiene las siguientes restricciones y requisitos:
-\begin{itemize}
-	\item Las opciones de diseño dependen de una parcial integración de \ac{ICall} para guardar  recursos del sistema. En el caso de uso del módulo \ac{ICall}, se tiene que utilizar el sistema de gestión de pila del módulo \ac{ICall}.
-	\item No puede haber interacción humana-computador porque no existe separación entre el controlador y el host.
-	\item Las opciones de privacidad no son soportadas.
-	\item Para minimizar el consumo de memoria y eliminar redundantes cambios de contexto el uBle no utiliza diferentes tareas en TI-RTOS.
-	\item Solo configuraciones utilizando el \textit{MultiMode RF Driver} pueden ser usada con otros protocolos RF. 
-\end{itemize} 
-
 \subsubsection{Modos de operación}
 
 \paragraph{Modo Beacon}
@@ -97,3 +84,15 @@ Las especificaciones IEEE 802.15.4 definen un modo de operación \textit{non-beac
 
 Las aplicaciones que son desarrolladas usando el TI 15.4-Stack pueden ser configuradas para operar en redes con saltos de frecuencia donde los dispositivos de la red cambian de frecuencia. Este modo de funcionamiento está basado en el modo \ac{DFE} de las especificaciones de Wi-SUN FAN.\\
 
+\subsubsection{uBle}
+
+\ac{uBle} es una variante del paquete BLE-Stack para los dispositivos con conectividad Sub1-GHz y 2.4GHz, como el CC1350. Este paquete permite a las aplicaciones ser encontradas, escanear o actuar como monitor de conexión. El paquete uBle utiliza el \textit{MultiMode RF Driver}. El \textit{MultiMode RF Driver} permite a las aplicaciones usar ambos modos donde otro protocolo de comunicación es integrado junto al uBle.
+
+El Micro BLE Stack tiene las siguientes restricciones y requisitos:
+\begin{itemize}
+	\item Las opciones de diseño dependen de una parcial integración de \ac{ICall} para guardar  recursos del sistema. En el caso de uso del módulo \ac{ICall}, se tiene que utilizar el sistema de gestión de pila del módulo \ac{ICall}.
+	\item No puede haber interacción humana-computador porque no existe separación entre el controlador y el host.
+	\item Las opciones de privacidad no son soportadas.
+	\item Para minimizar el consumo de memoria y eliminar redundantes cambios de contexto el uBle no utiliza diferentes tareas en TI-RTOS.
+	\item Solo configuraciones utilizando el \textit{MultiMode RF Driver} pueden ser usada con otros protocolos RF. 
+\end{itemize} 

@@ -15,20 +15,17 @@
 
 En la figura \ref{fig:esquemaGeneral} se observa el diagrama simplificado de este proyecto donde se están representados los diferentes elementos que componen la arquitectura.\\
 
-Del diagrama se extrae que hay cuatro dispositivos distintos: nodo, concentrador, Raspberry Pi y servidor. Cada uno de estos elementos tiene su propia linea de ejecución diferente de los demás. También se observa como están interconectados los diferentes dispositivos usando protocolos diferentes según sea la comunicación. En las siguientes secciones se repasa la función de cada uno de los dispositivos y como se comunican con los demás.
+Del diagrama se extrae que hay tres bloques distintos: nodo, concentrador y servidor. Cada uno de estos elementos tiene su propia linea de ejecución diferente de los demás. También se observa como están interconectados los diferentes dispositivos usando protocolos diferentes según sea la comunicación. En las siguientes secciones se repasa la función de cada uno de los dispositivos y como se comunican con los demás.
 
 \section{Nodo}
 
-El nodo es el extremos de la red, y es el encargado de comunicarle al usuario la \ac{URL} tal y como define la web física. Este está basado en el microcontrolador CC1350 SimpleLink\TM de Texas Instruments que nos permite comunicación en dos bandas de frecuencia diferentes, en nuestro caso 868MHz y 2.4Ghz.\\
+El nodo es el extremo de la red, y es el encargado de comunicarle al usuario la \ac{URL} tal y como define la web física. Este está basado en el microcontrolador CC1350 SimpleLink\TM de Texas Instruments que permite comunicación en dos bandas de frecuencia diferentes, en nuestro caso 868MHz y 2.4Ghz.\\
 
 Con el uso de estas dos bandas de frecuencia, el nodo se comunicará con el usuario usando la banda de 2.4GHz y el protocolo bluetooth. Y con el resto de la red usando la banda de 868MHz y el protocolo TI 15.4 Stack.\\
 
 \section{Concentrador}
 
-El concentrador es el nodo central de la red TI 15.4 Stack, este se encarga de comunicarse con los nodos a 868MHz. Este dispositivo ejecuta un código precompilado, que implementa una capa 802.15.4e/g MAC/PHY y proporciona una interfaz basada en el protocolo \ac{MT} que conecta el dispositivo con el host linux, en nuestro caso una Raspberry Pi.\\
-
-El concentrador está compuesto por dos dispositivos diferentes, un dispositivo CC1350 que actúa como coprocesador de una RaspberryPi.
-
+El concentrador está compuesto por dos dispositivos diferentes, un dispositivo CC1350 que actúa como coprocesador de una RaspberryPi. Este bloque es el nodo central de la red TI 15.4 Stack, este se encarga de comunicarse con los nodos a 868MHz. Este dispositivo ejecuta un código precompilado, que implementa una capa 802.15.4e/g MAC/PHY y proporciona una interfaz basada en el protocolo \ac{MT} que conecta el dispositivo con el host linux, en nuestro caso una Raspberry Pi.\\
 
 \section{Servidor}
 

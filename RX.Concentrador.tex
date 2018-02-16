@@ -28,39 +28,30 @@ Componentes software:
 	\item \textbf{Aplicación TI 15.4-Stack:} Este módulo implementa la aplicación usando el protocolo 802.15.4e/g y la estructura del modelo \ac{MT}.
 \end{itemize}
 
-\subsection{Descripción del SDK}
+\subsection{Descripción del directorio del proyecto}
 
 
-La figura \ref{fig:fig-oob-dir} muestra la estructura del directorio de instalación del TI 15.4-Stack 2.1.0. A continuación se explica una descripción de alto nivel de cada carpeta:
-
-\begin{description}
-	\item[components: ] Contiene las siguientes librerías:
-	\begin{description}
-		\item[common: ] Rutinas para características del sistema operativo, como lectura y escritura de ficheros.
-		\item[nv: ]  Simula una memoria no volátil, como la usada en sistemas empotrados.
-		\item[api: ] Interfaz de mensajes API MAC y MT
-	\end{description}
-	\item[docs: ] Documentos como la guía de desarrollo y la guía de comandos MAC para el coprocesador.
-	\item[example: ] Aplicación de ejemplo
-	\begin{description}
-		\item[cc13xx-sbl: ] Herramientas para la actualización para los dispositivos CC13x0.
-		\item[collector: ]  Aplicación de ejemplo que demuestra como iniciar una red, permitir la conexión de dispositivos y recoger datos desde dispositivos remotos.
-		\item[gateway: ] Una aplicación basada en Node.js\TM que crea un servidor local y muestra la información de la red y los datos de los nodos.
-		\item[npi\_server2: ] Interfaz socket para comunicarse con el coprocesador.
-		\item[google: ] Contiene un makefile para descargar e instalar el compilador de \textit{Google protocol buffer}.
-	\end{description}
-	\item[firmware] Precompilados ficheros .hex para el coprocesador.
-	\item[prebuilt] Compilación para ejecutar la aplicación de ejemplo en una BeagleBone Black.
-	\item[scripts] Contiene fragmentos de ficheros makefile usados para compilar la aplicación de ejemplo.
-\end{description}
-
-\subsection{Funcionamiento}
+La figura \ref{fig:fig-oob-dir} muestra la estructura del directorio del proyecto del concentrador. A continuación se explica una descripción de alto nivel de cada carpeta:
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=0.2\textwidth]{graphs/fig-oob-dir}
 	\caption{Estructura del directorio TI 15.4-Stack 2.1.0 Linux\R}
 	\label{fig:fig-oob-dir}
 \end{figure}
+\begin{description}
+	\item[cc13xx-sbl: ] Herramientas para la actualización para los dispositivos CC13x0.
+	\item[collector: ]  Aplicación de ejemplo que demuestra como iniciar una red, permitir la conexión de dispositivos y recoger datos desde dispositivos remotos.
+	\item[docs] En esta carpeta se encuentra la documentación generada por Doxygen.
+	\item[npi\_server2: ] Interfaz socket para comunicarse con el coprocesador.
+	\item[google: ] Contiene un makefile para descargar e instalar el compilador de \textit{Google protocol buffer}.
+	\item[build.sh] Compila el proyecto.
+	\item[run.sh] Ejecuta la aplicación.
+	\item[PullBuild.sh] Descarga una nueva versión del código desde Github y compila el proyecto.
+	\item[pullBuildRun.sh] Descarga, compila y ejecuta el proyecto.
+\end{description}
+
+
+\subsection{Funcionamiento}
 
 El proyecto comienza en la función \textit{main()}  en el fichero \textit{linux\_main.c}, donde se inicializan las diferentes interfaces, se lee el fichero de configuración y ejecuta la función \textit{App\_main()} del fichero \textit{appsrv.c}.\\
 
@@ -77,7 +68,7 @@ En el bucle se revisan los eventos para la inicialización de la red, el envío de
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.8\textwidth]{graphs/fig-collector-task-flow-chart}
+	\includegraphics[width=0.7\textwidth]{graphs/fig-collector-task-flow-chart}
 	\caption{Flujo del hilo principal del concentrador}
 	\label{fig:fig-collector-task-flow-chart}
 \end{figure}
